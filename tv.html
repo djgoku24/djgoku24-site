@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Radio DJ Goku 24</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      height:100%;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:#000 url("https://i.imgur.com/d60FjQP.png") center/cover fixed;
+      color:#f9fafb;
+    }
+    body{display:flex;flex-direction:column;}
+
+    /* HEADER: logo + barra menu sulla stessa riga */
+    header{
+      padding:6px 16px 8px;
+      background:transparent;
+    }
+    .header-row{
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+    }
+    .header-logo{
+      flex:0 0 60px;
+      display:flex;
+      align-items:center;
+    }
+    .header-logo img{
+      width:60px;
+      height:60px;
+      border-radius:8px;
+      object-fit:cover;
+    }
+    .menu-bar{
+      flex:1;
+      margin-left:8px;
+      height:30px;
+      background:linear-gradient(90deg,#b45309,#9ca3af,#4b5563,#6366f1);
+      display:flex;
+      align-items:center;
+      justify-content:space-around;
+    }
+    .menu-item{
+      flex:1;
+      text-align:center;
+      color:#000;
+      text-decoration:none;
+      font-size:14px;
+      font-family:"Times New Roman",serif;
+    }
+    .menu-item.active{text-decoration:underline;}
+
+    main{
+      flex:1;
+      padding:14px 10px 16px;
+    }
+
+    .block-title{
+      font-size:14px;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      margin-bottom:6px;
+      color:#e5e7eb;
+    }
+    .block iframe{
+      width:100%;
+      border:none;
+      border-radius:8px;
+      background:#000;
+      box-shadow:0 10px 25px rgba(0,0,0,.75);
+    }
+
+    /* RIGA 1: news (2/3) + orologio (1/3) */
+    .top-row{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:12px;
+      margin-bottom:8px;
+    }
+    .news-slot{
+      height:30px;
+      overflow:hidden;
+    }
+    .news-slot iframe{
+      width:100%;
+      height:100%;
+      border:none;
+      background:transparent;
+    }
+
+    /* OROLOGIO */
+    .clock-slot{
+      height:25px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      overflow:hidden;
+      margin-top:0px;
+      margin-left:0px;
+      margin-right:80px;
+    }
+    .clock-wrap{
+      width:100%;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:16px;
+      padding:0 10px;
+    }
+    .date-line{
+      font-size:18px;
+      font-weight:500;
+    }
+    .time-line{
+      font-size:26px;
+      font-weight:700;
+    }
+
+    /* RIGA 2: player + meteo */
+    .layout{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      grid-template-rows:auto auto;
+      gap:12px;
+    }
+
+    /* PLAYER RADIO */
+    .player-block{
+      grid-column:1/2;
+      grid-row:1/2;
+      margin-top:20px;
+      margin-left:0px;
+      margin-right:0px;
+    }
+    .player-block iframe{
+      height:260px;
+    }
+
+    /* BLOCCO TWITCH SOTTO IL PLAYER AUDIO */
+    .twitch-block{
+      margin-top:12px;           /* ↑↓ sposti il blocco Twitch */
+      display:flex;
+      justify-content:flex-start;/* left/center/right */
+    }
+    .twitch-iframe{
+      width:320px;               /* larghezza iniziale Twitch */
+      height:180px;              /* altezza (16:9)          */
+      border-radius:8px;
+      box-shadow:0 10px 25px rgba(0,0,0,.75);
+    }
+
+    /* METEO */
+    .weather-iframe-wrap{
+      flex:0 0 260px;
+      overflow:hidden;
+      display:flex;
+      margin-top:62px;
+      margin-left:30px;
+      margin-right:0px;
+    }
+    .weather-iframe-wrap iframe{
+      width:100%;
+      height:100%;
+      border:none;
+      border-radius:8px;
+      background:#000;
+      box-shadow:0 10px 25px rgba(0,0,0,.75);
+    }
+
+    .empty-block{
+      grid-column:1/2;
+      grid-row:2/3;
+      min-height:60px;
+    }
+
+    /* LOGO SOTTO METEO */
+    .logo-bottom-block{
+      grid-column:2/3;
+      grid-row:2/3;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      margin-top:60px;
+      margin-left:0px;
+      margin-right:0px;
+    }
+    .logo-bottom-block img{
+      max-width:100%;
+      max-height:350px;
+      width:80%;
+      max-width:350px;
+      object-fit:contain;
+    }
+
+    /* MOBILE */
+    @media (max-width:768px){
+      header{
+        padding:10px 10px 6px;
+      }
+      .header-row{
+        flex-direction:column;
+        align-items:center;
+      }
+      .menu-bar{
+        margin-left:0;
+        margin-top:6px;
+        width:100%;
+      }
+      main{padding:10px 8px 14px;}
+
+      .top-row{
+        grid-template-columns:1fr;
+      }
+
+      .layout{
+        grid-template-columns:1fr;
+        grid-template-rows:auto;
+      }
+      .player-block,
+      .weather-block,
+      .empty-block,
+      .logo-bottom-block{
+        grid-column:1/2!important;
+        grid-row:auto!important;
+      }
+      .player-block iframe{
+        height:230px;
+      }
+      .twitch-iframe{
+        width:100%;
+        height:200px;
+      }
+      .weather-iframe-wrap{
+        flex:0 0 230px;
+      }
+      .weather-iframe-wrap iframe{
+        height:230px;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-row">
+    <div class="header-logo">
+      <img src="https://i.imgur.com/D3TIKdj.jpeg" alt="Logo DJ Goku 24">
+    </div>
+    <div class="menu-bar">
+     <a href="/djgoku24/index.html" class="menu-item active">HOME</a>
+      <a href="https://www.twitch.tv/djgoku24" class="menu-item">Canale Twitch</a>
+      <a href="/djgoku24/tv.html" class="menu-item">TV</a>
+    </div>
+  </div>
+</header>
+
+<main id="home">
+
+  <!-- RIGA 1: news + orologio -->
+  <div class="top-row">
+    <div class="news-slot">
+      <iframe src="https://www.agi.it/embed.html"></iframe>
+    </div>
+
+    <div class="clock-slot">
+      <div class="clock-wrap">
+        <div class="date-line" id="clock-date"></div>
+        <div class="time-line" id="clock-time"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGA 2: player + meteo + logo -->
+  <div class="layout">
+    <section class="block player-block">
+      <div class="block-title">In onda adesso</div>
+
+      <!-- PLAYER AUDIO -->
+      <iframe src="https://players.rcast.net/oneplayer/200201"
+              frameborder="0" scrolling="no" allow="autoplay"></iframe>
+      <div style="overflow:hidden; height:0; width:0;">
+        <a href="https://www.rcast.net" title="Internet Radio Hosting">RCAST.NET</a>
+      </div>
+
+      <!-- PLAYER TWITCH SOTTO AUDIO -->
+      <div class="twitch-block">
+        <iframe
+          src="https://player.twitch.tv/?channel=djgoku24&parent=tuodominio.byethost.com"
+          frameborder="0"
+          allowfullscreen="true"
+          scrolling="no"
+          allow="autoplay; fullscreen"
+          class="twitch-iframe">
+        </iframe>
+      </div>
+    </section>
+
+    <section class="block weather-block">
+      <div class="weather-iframe-wrap">
+        <div id="ww_50bc6b5ecde95" v='1.3' loc='id' a='{"t":"horizontal","lang":"it","sl_lpl":1,"ids":["wl7981"],"font":"Times","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
+          Altre previsioni:
+          <a href="https://oneweather.org/rome/30_days/" id="ww_50bc6b5ecde95_u" target="_blank">Rome weather 30 days</a>
+        </div>
+        <script async src="https://app3.weatherwidget.org/js/?id=ww_50bc6b5ecde95"></script>
+      </div>
+    </section>
+
+    <section class="empty-block"></section>
+
+    <!-- LOGO SOTTO METEO -->
+    <section class="logo-bottom-block">
+      <img src="https://i.imgur.com/qfeilVN.png" alt="Logo DJ Goku 24">
+    </section>
+  </div>
+</main>
+
+<section id="twitch"></section>
+<section id="tv"></section>
+
+<script>
+  function updateClock(){
+    const now = new Date();
+    const days = ["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"];
+    const dName = days[now.getDay()];
+    const d  = String(now.getDate()).padStart(2,"0");
+    const m  = String(now.getMonth()+1).padStart(2,"0");
+    const y  = now.getFullYear();
+    const hh = String(now.getHours()).padStart(2,"0");
+    const mm = String(now.getMinutes()).padStart(2,"0");
+    const ss = String(now.getSeconds()).padStart(2,"0");
+
+    document.getElementById("clock-date").textContent =
+      dName + " " + d + " / " + m + " / " + y;
+    document.getElementById("clock-time").textContent =
+      hh + ":" + mm + ":" + ss;
+  }
+  updateClock();
+  setInterval(updateClock,1000);
+</script>
+
+</body>
+</html>
