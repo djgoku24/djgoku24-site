@@ -1,3 +1,6 @@
+Ecco il file completo con desktop come prima e mobile adattato (una colonna, niente restringimento sul PC):
+
+xml
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -17,16 +20,9 @@
       flex-direction:column;
     }
 
-    /* WRAPPER CENTRALE: limita larghezza su desktop */
-    .page-wrap{
-      width:100%;
-      max-width:1200px;
-      margin:0 auto;
-    }
-
     /* HEADER: logo + barra menu */
     header{
-      padding:6px 12px 8px;
+      padding:6px 16px 8px;
       background:transparent;
     }
     .header-row{
@@ -95,6 +91,9 @@
     .news-slot{
       height:30px;
       overflow:hidden;
+      margin-top:0;
+      margin-left:0;
+      margin-right:0;
     }
     .news-slot iframe{
       width:100%;
@@ -111,7 +110,7 @@
       overflow:hidden;
       margin-top:0;
       margin-left:0;
-      margin-right:16px;
+      margin-right:80px;
     }
     .clock-wrap{
       width:100%;
@@ -119,15 +118,15 @@
       display:flex;
       align-items:center;
       justify-content:flex-end;
-      gap:8px;
-      padding:0 4px;
+      gap:16px;
+      padding:0 10px;
     }
     .date-line{
-      font-size:16px;
+      font-size:18px;
       font-weight:500;
     }
     .time-line{
-      font-size:22px;
+      font-size:26px;
       font-weight:700;
     }
 
@@ -155,7 +154,7 @@
     .chat-block{
       grid-column:1/2;
       grid-row:2/3;
-      margin-top:24px;
+      margin-top:40px;
       margin-left:0;
       margin-right:0;
     }
@@ -163,20 +162,23 @@
       height:450px;
     }
 
-    /* METEO + SCARICA APP */
+    /* METEO */
     .weather-block{
       grid-column:2/3;
       grid-row:1/2;
       display:flex;
       flex-direction:column;
-      margin-top:40px;
-      margin-left:16px;
+      margin-top:62px;
+      margin-left:30px;
       margin-right:0;
     }
     .weather-iframe-wrap{
       flex:0 0 220px;
       overflow:hidden;
       display:flex;
+      margin-top:0;
+      margin-left:0;
+      margin-right:0;
     }
     .weather-iframe-wrap iframe{
       width:100%;
@@ -187,18 +189,19 @@
       box-shadow:0 10px 25px rgba(0,0,0,.75);
     }
 
+    /* SCARICA APP */
     .download-block{
       grid-column:2/3;
       grid-row:2/3;
-      margin-top:24px;
-      margin-left:16px;
+      margin-top:100px;
+      margin-left:0;
       margin-right:0;
     }
 
     .download-inner{
-      width:100%;
+      width:80%;
       max-width:450px;
-      min-height:220px;
+      min-height:300px;
       margin:0 auto;
       padding:16px 20px;
       background:linear-gradient(90deg,#ef4444,#f97316);
@@ -213,13 +216,13 @@
       gap:10px;
     }
     .download-text{
-      font-size:18px;
+      font-size:25px;
       font-weight:700;
       text-transform:uppercase;
       letter-spacing:.12em;
     }
     .download-inner button{
-      padding:10px 32px;
+      padding:10px 50px;
       border-radius:999px;
       border:none;
       background:#111827;
@@ -232,11 +235,8 @@
 
     /* MOBILE */
     @media (max-width:768px){
-      .page-wrap{
-        max-width:100%;
-      }
       header{
-        padding:10px 8px 6px;
+        padding:10px 10px 6px;
       }
       .header-row{
         flex-direction:column;
@@ -248,7 +248,7 @@
         width:100%;
       }
       main{
-        padding:10px 6px 14px;
+        padding:10px 8px 14px;
       }
 
       .top-row{
@@ -261,6 +261,7 @@
       .clock-wrap{
         justify-content:flex-start;
         gap:6px;
+        padding:0 4px;
       }
       .date-line{font-size:14px;}
       .time-line{font-size:20px;}
@@ -279,7 +280,7 @@
         margin-right:0;
       }
       .player-block iframe{
-        height:220px;
+        height:230px;
       }
       .chat-block iframe{
         height:260px;
@@ -288,16 +289,24 @@
         flex:0 0 auto;
       }
       .weather-iframe-wrap iframe{
-        height:220px;
+        height:230px;
       }
       .download-inner{
         width:100%;
+        max-width:none;
+        min-height:220px;
+      }
+      .download-text{
+        font-size:18px;
+      }
+      .download-inner button{
+        padding:10px 32px;
       }
     }
   </style>
 </head>
 <body>
-<div class="page-wrap">
+
 <header>
   <div class="header-row">
     <div class="header-logo">
@@ -372,7 +381,6 @@
 
 <section id="twitch"></section>
 <section id="tv"></section>
-</div>
 
 <script>
   function updateClock(){
