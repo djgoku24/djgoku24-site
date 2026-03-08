@@ -12,11 +12,21 @@
       background:#000 url("https://i.imgur.com/d60FjQP.png") center/cover fixed;
       color:#f9fafb;
     }
-    body{display:flex;flex-direction:column;}
+    body{
+      display:flex;
+      flex-direction:column;
+    }
 
-    /* HEADER: logo + barra menu sulla stessa riga */
+    /* WRAPPER CENTRALE: limita larghezza su desktop */
+    .page-wrap{
+      width:100%;
+      max-width:1200px;
+      margin:0 auto;
+    }
+
+    /* HEADER: logo + barra menu */
     header{
-      padding:6px 16px 8px;
+      padding:6px 12px 8px;
       background:transparent;
     }
     .header-row{
@@ -74,7 +84,7 @@
       box-shadow:0 10px 25px rgba(0,0,0,.75);
     }
 
-    /* RIGA 1: NEWS + OROLOGIO (affiancati) */
+    /* RIGA 1: NEWS + OROLOGIO */
     .top-row{
       display:grid;
       grid-template-columns:2fr 1fr;
@@ -85,9 +95,6 @@
     .news-slot{
       height:30px;
       overflow:hidden;
-      margin-top:0px;      /* ↑↓ sposti le NEWS */
-      margin-left:0px;     /* ←→ */
-      margin-right:0px;
     }
     .news-slot iframe{
       width:100%;
@@ -102,9 +109,9 @@
       align-items:center;
       justify-content:flex-end;
       overflow:hidden;
-      margin-top:0px;      /* ↑↓ sposti OROLOGIO */
-      margin-left:0px;     /* ←→ */
-      margin-right:80px;
+      margin-top:0;
+      margin-left:0;
+      margin-right:16px;
     }
     .clock-wrap{
       width:100%;
@@ -112,15 +119,15 @@
       display:flex;
       align-items:center;
       justify-content:flex-end;
-      gap:16px;
-      padding:0 10px;
+      gap:8px;
+      padding:0 4px;
     }
     .date-line{
-      font-size:18px;
+      font-size:16px;
       font-weight:500;
     }
     .time-line{
-      font-size:26px;
+      font-size:22px;
       font-weight:700;
     }
 
@@ -132,47 +139,44 @@
       gap:12px;
     }
 
-    /* PLAYER – sposta tutto il blocco player */
+    /* PLAYER */
     .player-block{
       grid-column:1/2;
       grid-row:1/2;
-      margin-top:20px;      /* ↑↓ sposti PLAYER */
-      margin-left:0px;     /* ←→ */
-      margin-right:0px;
+      margin-top:20px;
+      margin-left:0;
+      margin-right:0;
     }
     .player-block iframe{
       height:260px;
     }
 
-    /* CHAT sotto il player – spostabile */
+    /* CHAT */
     .chat-block{
       grid-column:1/2;
       grid-row:2/3;
-      margin-top:40px;      /* ↑↓ sposti CHAT */
-      margin-left:0px;
-      margin-right:0px;
+      margin-top:24px;
+      margin-left:0;
+      margin-right:0;
     }
     .chat-block iframe{
       height:450px;
     }
 
-    /* METEO – blocco spostabile indipendente */
+    /* METEO + SCARICA APP */
     .weather-block{
       grid-column:2/3;
       grid-row:1/2;
       display:flex;
       flex-direction:column;
-      margin-top:62px;      /* ↑↓ sposti METEO+SCARICA insieme */
-      margin-left:30px;
-      margin-right:0px;
+      margin-top:40px;
+      margin-left:16px;
+      margin-right:0;
     }
     .weather-iframe-wrap{
       flex:0 0 220px;
       overflow:hidden;
       display:flex;
-      margin-top:0px;      /* offset solo METEO sopra/sotto */
-      margin-left:0px;
-      margin-right:0px;
     }
     .weather-iframe-wrap iframe{
       width:100%;
@@ -183,54 +187,56 @@
       box-shadow:0 10px 25px rgba(0,0,0,.75);
     }
 
- /* SCARICA LA NOSTRA APP – spostabile sotto il meteo */
-.download-block{
-  grid-column:2/3;
-  grid-row:2/3;
-  margin-top:100px;
-  margin-left:0px;
-  margin-right:0px;
-}
+    .download-block{
+      grid-column:2/3;
+      grid-row:2/3;
+      margin-top:24px;
+      margin-left:16px;
+      margin-right:0;
+    }
 
-/* qui lo rendiamo più grande */
-.download-inner{
-  width:80%;              /* più stretto dell'intera colonna (80% o meno) */
-  max-width:450px;        /* larghezza massima fissa */
-  min-height:300px;
-  margin:0 auto;          /* centra il riquadro stretto */
-  padding:16px 20px;
-  background:linear-gradient(90deg,#ef4444,#f97316);
-  border-radius:12px;
-  text-align:center;
-  color:#fff7ed;
-  box-shadow:0 10px 25px rgba(0,0,0,.8);
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  gap:10px;
-}
-.download-text{
-  font-size:25px;            /* leggermente più grande */
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:.12em;
-}
-.download-inner button{
-  padding:10px 50px;         /* bottone più grande */
-  border-radius:999px;
-  border:none;
-  background:#111827;
-  color:#f9fafb;
-  font-weight:700;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  cursor:pointer;
-}
+    .download-inner{
+      width:100%;
+      max-width:450px;
+      min-height:220px;
+      margin:0 auto;
+      padding:16px 20px;
+      background:linear-gradient(90deg,#ef4444,#f97316);
+      border-radius:12px;
+      text-align:center;
+      color:#fff7ed;
+      box-shadow:0 10px 25px rgba(0,0,0,.8);
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+    }
+    .download-text{
+      font-size:18px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+    .download-inner button{
+      padding:10px 32px;
+      border-radius:999px;
+      border:none;
+      background:#111827;
+      color:#f9fafb;
+      font-weight:700;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      cursor:pointer;
+    }
 
+    /* MOBILE */
     @media (max-width:768px){
+      .page-wrap{
+        max-width:100%;
+      }
       header{
-        padding:10px 10px 6px;
+        padding:10px 8px 6px;
       }
       .header-row{
         flex-direction:column;
@@ -241,11 +247,23 @@
         margin-top:6px;
         width:100%;
       }
-      main{padding:10px 8px 14px;}
+      main{
+        padding:10px 6px 14px;
+      }
 
       .top-row{
         grid-template-columns:1fr;
       }
+      .clock-slot{
+        justify-content:flex-start;
+        margin-right:0;
+      }
+      .clock-wrap{
+        justify-content:flex-start;
+        gap:6px;
+      }
+      .date-line{font-size:14px;}
+      .time-line{font-size:20px;}
 
       .layout{
         grid-template-columns:1fr;
@@ -257,32 +275,39 @@
       .download-block{
         grid-column:1/2!important;
         grid-row:auto!important;
+        margin-left:0;
+        margin-right:0;
       }
       .player-block iframe{
-        height:230px;
+        height:220px;
       }
       .chat-block iframe{
-        height:200px;
+        height:260px;
       }
       .weather-iframe-wrap{
-        flex:0 0 230px;
+        flex:0 0 auto;
       }
       .weather-iframe-wrap iframe{
-        height:230px;
+        height:220px;
+      }
+      .download-inner{
+        width:100%;
       }
     }
   </style>
 </head>
 <body>
+<div class="page-wrap">
 <header>
   <div class="header-row">
     <div class="header-logo">
       <img src="https://i.imgur.com/D3TIKdj.jpeg" alt="Logo DJ Goku 24">
     </div>
     <div class="menu-bar">
-  <a href="/index.html" class="menu-item active">HOME</a>
+      <a href="/index.html" class="menu-item active">HOME</a>
       <a href="https://www.twitch.tv/djgoku24" class="menu-item">Canale Twitch</a>
-    <a href="/tv.html" class="menu-item">TV</a>
+      <a href="/tv.html" class="menu-item">TV</a>
+    </div>
   </div>
 </header>
 
@@ -347,6 +372,7 @@
 
 <section id="twitch"></section>
 <section id="tv"></section>
+</div>
 
 <script>
   function updateClock(){
@@ -367,8 +393,6 @@
   }
   updateClock();
   setInterval(updateClock,1000);
-  
- 
 </script>
 
 </body>
