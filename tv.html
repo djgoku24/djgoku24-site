@@ -14,7 +14,7 @@
     }
     body{display:flex;flex-direction:column;}
 
-    /* HEADER: logo + barra menu sulla stessa riga */
+    /* HEADER */
     header{
       padding:6px 16px 8px;
       background:transparent;
@@ -74,7 +74,7 @@
       box-shadow:0 10px 25px rgba(0,0,0,.75);
     }
 
-    /* RIGA 1: news (2/3) + orologio (1/3) */
+    /* RIGA 1: news + orologio */
     .top-row{
       display:grid;
       grid-template-columns:2fr 1fr;
@@ -92,7 +92,6 @@
       background:transparent;
     }
 
-    /* OROLOGIO */
     .clock-slot{
       height:25px;
       display:flex;
@@ -121,47 +120,49 @@
       font-weight:700;
     }
 
-    /* RIGA 2: player + meteo */
+    /* RIGA 2: player sinistra, meteo+logo destra */
     .layout{
       display:grid;
       grid-template-columns:2fr 1fr;
-      grid-template-rows:auto auto;
+      grid-template-rows:auto;
       gap:12px;
     }
 
-    /* PLAYER RADIO */
+    /* PLAYER RADIO + TWITCH (colonna sinistra) */
     .player-block{
       grid-column:1/2;
-      grid-row:1/2;
       margin-top:20px;
-      margin-left:0px;
-      margin-right:0px;
     }
     .player-block iframe{
       height:260px;
     }
 
-    /* BLOCCO TWITCH SOTTO IL PLAYER AUDIO */
     .twitch-block{
-      margin-top:12px;           /* ↑↓ sposti il blocco Twitch */
+      margin-top:12px;
       display:flex;
-      justify-content:flex-start;/* left/center/right */
+      justify-content:flex-start;
     }
     .twitch-iframe{
-      width:320px;               /* larghezza iniziale Twitch */
-      height:350px;              /* altezza (16:9)          */
+      width:320px;
+      height:350px;
       border-radius:8px;
       box-shadow:0 10px 25px rgba(0,0,0,.75);
     }
 
-    /* METEO */
+    /* COLONNA DESTRA: METEO + LOGO SOTTO */
+    .right-column{
+      grid-column:2/3;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      margin-top:60px;   /* alzi/abbassi tutta la colonna rispetto al player */
+      gap:12px;
+    }
+
     .weather-iframe-wrap{
-      flex:0 0 260px;
+      width:100%;
       overflow:hidden;
       display:flex;
-      margin-top:62px;
-      margin-left:30px;
-      margin-right:0px;
     }
     .weather-iframe-wrap iframe{
       width:100%;
@@ -172,22 +173,13 @@
       box-shadow:0 10px 25px rgba(0,0,0,.75);
     }
 
-    .empty-block{
-      grid-column:1/2;
-      grid-row:2/3;
-      min-height:60px;
-    }
-
-    /* LOGO SOTTO METEO */
+    /* LOGO SOTTO METEO (spostabile) */
     .logo-bottom-block{
-      grid-column:2/3;
-      grid-row:2/3;
+      width:100%;
       display:flex;
       justify-content:center;
       align-items:center;
-      margin-top:0px;
-      margin-left:0px;
-      margin-right:0px;
+      margin-top:35px;   /* QUI regoli quanto sotto il meteo sta il logo */
     }
     .logo-bottom-block img{
       max-width:100%;
@@ -196,6 +188,8 @@
       max-width:350px;
       object-fit:contain;
     }
+
+    .empty-block{display:none;}
 
     /* MOBILE */
     @media (max-width:768px){
@@ -219,14 +213,10 @@
 
       .layout{
         grid-template-columns:1fr;
-        grid-template-rows:auto;
       }
       .player-block,
-      .weather-block,
-      .empty-block,
-      .logo-bottom-block{
+      .right-column{
         grid-column:1/2!important;
-        grid-row:auto!important;
       }
       .player-block iframe{
         height:230px;
@@ -234,9 +224,6 @@
       .twitch-iframe{
         width:100%;
         height:200px;
-      }
-      .weather-iframe-wrap{
-        flex:0 0 230px;
       }
       .weather-iframe-wrap iframe{
         height:230px;
@@ -251,7 +238,7 @@
       <img src="https://i.imgur.com/D3TIKdj.jpeg" alt="Logo DJ Goku 24">
     </div>
     <div class="menu-bar">
-     <a href="/index.html" class="menu-item active">HOME</a>
+      <a href="/index.html" class="menu-item active">HOME</a>
       <a href="https://www.twitch.tv/djgoku24" class="menu-item">Canale Twitch</a>
       <a href="/tv.html" class="menu-item">TV</a>
     </div>
@@ -274,8 +261,9 @@
     </div>
   </div>
 
-  <!-- RIGA 2: player + meteo + logo -->
+  <!-- RIGA 2 -->
   <div class="layout">
+    <!-- COLONNA SINISTRA: AUDIO + TWITCH -->
     <section class="block player-block">
       <div class="block-title">In onda adesso</div>
 
@@ -286,35 +274,36 @@
         <a href="https://www.rcast.net" title="Internet Radio Hosting">RCAST.NET</a>
       </div>
 
-     <!-- PLAYER TWITCH SOTTO AUDIO -->
+      <!-- PLAYER TWITCH SOTTO AUDIO -->
       <div class="twitch-block">
         <iframe
-          src="https://player.twitch.tv/?channel=djgoku24&parent=djgoku24-site.antoninoaiello11.workers.dev&parent=radiodjgoku24.wixsite.com/djgoku24"
+          src="https://player.twitch.tv/?channel=djgoku24&parent=djgoku24-site.antoninoaiello11.workers.dev&parent=radiodjgoku24.wixsite.com"
           frameborder="0"
           allowfullscreen="true"
           scrolling="no"
           allow="autoplay; fullscreen"
           class="twitch-iframe">
         </iframe>
-      </div> 
-    </section>
-
-    <section class="block weather-block">
-      <div class="weather-iframe-wrap">
-        <div id="ww_50bc6b5ecde95" v='1.3' loc='id' a='{"t":"horizontal","lang":"it","sl_lpl":1,"ids":["wl7981"],"font":"Times","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
-          Altre previsioni:
-          <a href="https://oneweather.org/rome/30_days/" id="ww_50bc6b5ecde95_u" target="_blank">Rome weather 30 days</a>
-        </div>
-        <script async src="https://app3.weatherwidget.org/js/?id=ww_50bc6b5ecde95"></script>
       </div>
     </section>
 
-    <section class="empty-block"></section>
+    <!-- COLONNA DESTRA: METEO + LOGO -->
+    <div class="right-column">
+      <section class="block weather-block">
+        <div class="weather-iframe-wrap">
+          <div id="ww_50bc6b5ecde95" v='1.3' loc='id' a='{"t":"horizontal","lang":"it","sl_lpl":1,"ids":["wl7981"],"font":"Times","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
+            Altre previsioni:
+            <a href="https://oneweather.org/rome/30_days/" id="ww_50bc6b5ecde95_u" target="_blank">Rome weather 30 days</a>
+          </div>
+          <script async src="https://app3.weatherwidget.org/js/?id=ww_50bc6b5ecde95"></script>
+        </div>
+      </section>
 
-    <!-- LOGO SOTTO METEO -->
-    <section class="logo-bottom-block">
-      <img src="https://i.imgur.com/qfeilVN.png" alt="Logo DJ Goku 24">
-    </section>
+      <!-- LOGO SUBITO SOTTO IL METEO -->
+      <section class="logo-bottom-block">
+        <img src="https://i.imgur.com/qfeilVN.png" alt="Logo DJ Goku 24">
+      </section>
+    </div>
   </div>
 </main>
 
