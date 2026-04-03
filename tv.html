@@ -137,46 +137,28 @@
       height:260px;
     }
 
-   /* PLAYER TWITCH: wrapper tipo Wix */
-.twitch-block{
+  .twitch-block{
   margin-top: 16px;
   display: flex;
   justify-content: center;
 }
 
-/* contenitore responsive, puoi alzare/abbassare con padding-top */
+/* wrapper che decide le dimensioni reali */
 .twitch-wrapper{
-  width: 100%;
-  max-width: 1000px;           /* larghezza massima del player */
+  width: 70vw;          /* quanto grande lo vuoi */
+  max-width: 1000px;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 25px 60px rgba(0,0,0,.85);
 }
 
-/* 16:9 come player Wix; aumenta per averlo più alto (es. 70%, 80%) */
-.twitch-inner{
-  position: relative;
-  width: 100%;
-  padding-top: 56.25%;         /* 16/9 * 100 */
-}
-
-/* iframe Twitch che riempie il box */
+/* l’iframe si adatta al wrapper, ignorando height/width inline */
 .twitch-iframe{
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 16 / 9;   /* formato “Twitch”; aumenta se lo vuoi più alto */
   border: 0;
 }
-
-/* mobile */
-@media (max-width: 768px){
-  .twitch-wrapper{
-    max-width: 100%;
-    border-radius: 16px;
-  }
-}
-
     /* COLONNA DESTRA: METEO + LOGO SOTTO */
     .right-column{
       grid-column:2/3;
@@ -310,16 +292,16 @@
       <!-- PLAYER TWITCH SOTTO AUDIO -->
 <div class="twitch-block">
   <div class="twitch-wrapper">
-    <div class="twitch-inner">
-      <iframe
-        src="https://www.twitch.tv/djgoku24&parent=djgoku24-site.goku2424.workers.dev&parent=radiodjgoku24.wixsite.com"
-        frameborder="0"
-        allowfullscreen="true"
-        scrolling="no"
-        allow="autoplay; fullscreen"
-        class="twitch-iframe">
-      </iframe>
-    </div>
+    <!-- codice Twitch così come te lo dà -->
+    <iframe
+      src="https://player.twitch.tv/?channel=djgoku24&parent=radiodjgoku24.wixsite.com"
+      frameborder="0"
+      allowfullscreen="true"
+      scrolling="no"
+      height="378"
+      width="620"
+      class="twitch-iframe">
+    </iframe>
   </div>
 </div>
     </section>
