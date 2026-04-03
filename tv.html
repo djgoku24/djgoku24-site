@@ -137,7 +137,7 @@
       height:260px;
     }
 
- .twitch-block{
+.twitch-block{
   margin-top: 16px;
   display: flex;
   justify-content: center;
@@ -147,23 +147,19 @@
 .twitch-wrapper{
   width: 70vw;          /* quanto grande lo vuoi */
   max-width: 1000px;
-  border-radius: 30px;
+  border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 25px 60px rgba(0,0,0,.85);
-
-  position: relative;
-  /* 16:9 – se lo vuoi più alto metti 60%, 65%, 70%… */
-  padding-top: 56.25%;
 }
 
-/* l’iframe riempie il wrapper */
+/* l’iframe si adatta al wrapper, ignorando height/width inline */
 .twitch-iframe{
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 16 / 9;   /* formato “Twitch”; aumenta se lo vuoi più alto */
   border: 0;
 }
+
     /* COLONNA DESTRA: METEO + LOGO SOTTO */
     .right-column{
       grid-column:2/3;
