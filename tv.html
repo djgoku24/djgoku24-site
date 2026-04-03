@@ -137,22 +137,44 @@
       height:260px;
     }
 
-    .twitch-block{
-  margin-top: 12px;
+   /* PLAYER TWITCH: wrapper tipo Wix */
+.twitch-block{
+  margin-top: 16px;
   display: flex;
-  justify-content: center;      /* centra il player */
+  justify-content: center;
 }
 
-/* riquadro Twitch più grande e quasi quadrato */
-.twitch-iframe{
-  width: 70vw;          /* grandezza rispetto alla finestra */
-  max-width: 900px;
-  aspect-ratio: 4 / 3;  /* più alto del 16:9 */
-  height: auto;
+/* contenitore responsive, puoi alzare/abbassare con padding-top */
+.twitch-wrapper{
+  width: 100%;
+  max-width: 1000px;           /* larghezza massima del player */
   border-radius: 20px;
-  box-shadow: 0 35px 60px rgba(0,0,0,.85);
-  border: 0;
   overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0,0,0,.85);
+}
+
+/* 16:9 come player Wix; aumenta per averlo più alto (es. 70%, 80%) */
+.twitch-inner{
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;         /* 16/9 * 100 */
+}
+
+/* iframe Twitch che riempie il box */
+.twitch-iframe{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* mobile */
+@media (max-width: 768px){
+  .twitch-wrapper{
+    max-width: 100%;
+    border-radius: 16px;
+  }
 }
 
     /* COLONNA DESTRA: METEO + LOGO SOTTO */
@@ -286,16 +308,20 @@
       </div>
 
       <!-- PLAYER TWITCH SOTTO AUDIO -->
-      <div class="twitch-block">
-        <iframe
-          src="https://player.twitch.tv/?channel=djgoku24&parent=djgoku24-site.goku2424.workers.dev&parent=radiodjgoku24.wixsite.com"
-          frameborder="0"
-          allowfullscreen="true"
-          scrolling="no"
-          allow="autoplay; fullscreen"
-          class="twitch-iframe">
-        </iframe>
-      </div>
+<div class="twitch-block">
+  <div class="twitch-wrapper">
+    <div class="twitch-inner">
+      <iframe
+        src="https://player.twitch.tv/?channel=djgoku24&parent=djgoku24-site.goku2424.workers.dev&parent=radiodjgoku24.wixsite.com"
+        frameborder="0"
+        allowfullscreen="true"
+        scrolling="no"
+        allow="autoplay; fullscreen"
+        class="twitch-iframe">
+      </iframe>
+    </div>
+  </div>
+</div>
     </section>
 
     <!-- COLONNA DESTRA: METEO + LOGO -->
