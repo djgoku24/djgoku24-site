@@ -143,20 +143,17 @@
   justify-content: center;      /* centra il player */
 }
 
+/* riquadro Twitch più grande e quasi quadrato */
 .twitch-iframe{
-  width: 700px;          /* lato del quadrato */
-  aspect-ratio: 1 / 1;   /* QUADRATO */
+  width: 70vw;          /* grandezza rispetto alla finestra */
+  max-width: 900px;
+  aspect-ratio: 4 / 3;  /* più alto del 16:9 */
   height: auto;
   border-radius: 20px;
   box-shadow: 0 35px 60px rgba(0,0,0,.85);
   border: 0;
   overflow: hidden;
 }
- .twitch-iframe video{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;   /* riempie il quadrato, tagliando un po' i bordi */
-}   
 
     /* COLONNA DESTRA: METEO + LOGO SOTTO */
     .right-column{
