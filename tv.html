@@ -143,13 +143,11 @@
   justify-content: center;
 }
 
-/* box con ratio 16:9 e bordo arrotondato */
+/* wrapper che decide le dimensioni reali */
 .twitch-wrapper{
-  width: 70vw;              /* quanto grande vuoi il player */
+  width: 70vw;          /* quanto grande lo vuoi */
   max-width: 1000px;
-  position: relative;
-  padding-top: 56.25%;      /* 16 / 9 * 100 -> niente spazio vuoto sotto */
-  border-radius: 30px;
+  border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 25px 60px rgba(0,0,0,.85);
 }
@@ -159,7 +157,7 @@
   position: absolute;
   inset: 0;
   width: 100%;
-  height: auto;
+  height: 100%;
   border: 0;
   display: block;
 }
