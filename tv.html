@@ -138,16 +138,20 @@
     }
 
     .twitch-block{
-      margin-top:12px;
-      display:flex;
-      justify-content:flex-start;
-    }
-    .twitch-iframe{
-      width:320px;
-      height:500px;
-      border-radius:8px;
-      box-shadow:0 35px 40px rgba(0,0,0,.75);
-    }
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;      /* centra il player */
+}
+
+.twitch-iframe{
+  width: 900px;                 /* più largo */
+  aspect-ratio: 16 / 9;         /* forma tipo TV, non verticale */
+  height: auto;
+  border-radius: 18px;          /* angoli più morbidi */
+  box-shadow: 0 35px 60px rgba(0,0,0,.85);
+  border: 0;
+  overflow: hidden;
+}
 
     /* COLONNA DESTRA: METEO + LOGO SOTTO */
     .right-column{
