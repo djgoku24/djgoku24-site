@@ -2076,31 +2076,50 @@ max-height: 32px;
 
 
 
-.news-strip {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 14px;
-  padding: 4px 10px;
-}
 
-.news-strip-label {
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  white-space: nowrap;
-}
 
-.news-strip-frame {
-  display: block;
-  flex: 1;
-  width: 100%;
-  height: 36px;
-  border: 0;
+.right-now .right-cover {
+  width: clamp(76px, 8vw, 112px);
+  height: clamp(76px, 8vw, 112px);
+  border-radius: 10px;
   overflow: hidden;
-}
+  flex-shrink: 0;
+  background: #010610;
+  border: 1px solid #124b8f;
 }
 
+.right-now .right-cover img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  display: block;
+  border: 0;
+}
+
+
+.side-slogan {
+  animation: sloganGlow 3.2s ease-in-out infinite;
+}
+
+@keyframes sloganGlow {
+  0%, 100% {
+    text-shadow:
+      0 0 4px #007bff,
+      0 0 12px #007bff;
+  }
+
+  50% {
+    text-shadow:
+      0 0 8px #55dfff,
+      0 0 22px #007bff;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .side-slogan {
+    animation: none;
+  }
+}
 
 </style>
 </head>
@@ -2200,17 +2219,12 @@ max-height: 32px;
 
       </nav>
 
-      <div class="side-brand">
-        <img
-          src="assets/logo.png"
-          alt="DJ GOKU 24 Radio"
-        >
-
-        <div class="side-slogan">
-          Music<br>
-          is my life
-        </div>
-      </div>
+    <div class="side-brand">
+  <div class="side-slogan">
+    Music<br>
+    is my life
+  </div>
+</div>
     </aside>
 
     <main class="main">
@@ -2252,14 +2266,14 @@ max-height: 32px;
 </section>
         
 
-        <section class="now-playing panel">
-          <img
-            class="mini-logo"
-            src="assets/logo.png"
-            alt=""
-          >
+    <section class="now-playing panel">
+  <img
+    class="mini-logo"
+    src="assets/logo.png"
+    alt=""
+  >
 
-          <div class="track-copy">
+  <div class="track-copy">
   <strong>DJ GOKU 24 Radio</strong>
   <span id="currentTrack" aria-live="polite">
     Caricamento brano in onda…
@@ -2471,17 +2485,32 @@ max-height: 32px;
     <p>Scrivi in chat e partecipa alla diretta.</p>
   </div>
 
- <script id="cid0020000453771784862" data-cfasync="false" async src="//st.chatango.com/js/gz/emb.js" style="width: 777px;height: 537px;">{"handle":"djgoku24","arch":"js","styles":{"a":"990000","b":100,"c":"FFFFFF","d":"FFFFFF","k":"990000","l":"990000","m":"990000","n":"FFFFFF","p":"10","q":"990000","r":100,"fwtickm":1}}</script>
+ <script id="cid0020000453771784862" data-cfasync="false" async src="//st.chatango.com/js/gz/emb.js" style="width: 777px;height: 537px;">{"handle":"djgoku24","arch":"js","styles":{"a":"990000","b":100,"c":"FFFFFF","d":"FFFFFF","k":"990000","l":"990000","m":"990000","n":"FFFFFF","p":"10","q":"990000","r":100,"fwtickm":1}}
+
+
+
+
+
+
+
+
+
+
+
+</script>
     </main>
 
     <aside class="rightbar">
       <div class="right-label">IN ONDA ORA</div>
 
-      <div class="right-now">
-        <img
-          src="assets/logo.png"
-          alt="DJ GOKU 24 Radio"
-        >
+     <div class="right-now">
+  <div class="cover right-cover">
+    <img
+      id="onAirCoverImage"
+      src="assets/logo.png"
+      alt="Copertina del brano in onda"
+    >
+  </div>
 
         <div>
           <strong>DJ GOKU 24 Radio</strong>
@@ -2585,6 +2614,37 @@ max-height: 32px;
   src="https://app3.weatherwidget.org/js/?id=ww_50bc6b5ecde95"
 ></script>
 
-  <script src="renderer.js"></script>
+<script>
+const onAirCovers = document.querySelectorAll(".on-air-cover");
+
+  const onAirDefaultCover = "assets/logo.png";
+  const onAirCoverUrl =
+    "https://cover.lautbox.eu/?mode=lautfm&station=djgoku24";
+
+  let onAirCoverTimer = null;
+
+  function refreshOnAirCover() {
+    onAirCoverImage.onerror = () => {
+      onAirCoverImage.onerror = null;
+      onAirCoverImage.src = onAirDefaultCover;
+    };
+
+    onAirCoverImage.src =
+      onAirCoverUrl + "&_t=" + Date.now();
+  }
+
+  function startOnAirCoverRefresh() {
+    refreshOnAirCover();
+
+    onAirCoverTimer = setInterval(
+      refreshOnAirCover,
+      50000
+    );
+  }
+
+  startOnAirCoverRefresh();
+</script>
+
+<script src="renderer.js"></script>
 </body>
 </html>
