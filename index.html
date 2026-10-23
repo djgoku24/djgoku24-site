@@ -2010,6 +2010,69 @@
   font-size: 23px;
   line-height: 1;
 }
+
+/* NEWS: TUTTA LA LARGHEZZA DEL CONTENUTO CENTRALE */
+.app-shell .main #radioPage .news-strip {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  align-self: stretch;
+
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+
+  height: 32px;
+min-height: 32px;
+max-height: 32px;
+
+  flex: 0 0 auto;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+
+  overflow: hidden;
+  border: 1px solid #173958;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.app-shell .main #radioPage .news-strip-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 48px;
+  width: 48px;
+
+  margin: 0;
+  padding: 0;
+
+  background: linear-gradient(135deg, #087fff, #0649df);
+  color: #fff;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .5px;
+}
+
+.app-shell .main #radioPage iframe.news-strip-frame {
+  display: block;
+
+  flex: 1 1 0;
+  width: 0;
+  min-width: 0;
+  max-width: none;
+
+  height: 100%;
+  min-height: 0;
+
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  background: #fff;
+}
 </style>
 </head>
 
@@ -2158,6 +2221,19 @@
             </div>
           </div>
         </div>
+
+          <!-- NEWS AGI: SOTTO IL BANNER E SOPRA IL PLAYER -->
+<section class="news-strip panel" aria-label="Notizie AGI">
+  <div class="news-strip-label">NEWS</div>
+
+  <iframe
+    class="news-strip-frame"
+    src="https://www.agi.it/embed.html"
+    title="Ultime notizie AGI"
+    referrerpolicy="strict-origin-when-cross-origin"
+  ></iframe>
+</section>
+        
 
         <section class="now-playing panel">
           <img
