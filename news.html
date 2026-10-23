@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+#bandeau {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  background-color: red;
+  color: white;
+  text-align: center;
+  font-size: 36px; /* Ajustez la taille de la police selon vos besoins */
+  font-weight: bold; /* Rendez la police plus grasse */
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 1.5; /* Ajustez la hauteur de ligne à 1.5 pour augmenter l'espace vertical entre les lignes */
+  font-family: Arial, sans-serif; /* Changez la famille de polices selon vos préférences */
+  margin-left: 0; /* Ajustez la marge gauche à 0 pixels pour éliminer l'espace vide */
+}
+
+#rssText {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#rssText p {
+  margin: 0 40px; /* Ajoute des marges de 40px de chaque côté des titres */
+}
+
+</style>
+</head>
+<body>
+
+<div id="bandeau">
+  <div id="rssText">Chargement du flux RSS en cours...</div>
+</div>
+
+<script>
+let titles;
+let index = 0;
+
+function fetchRSS() {
+    fetch('/api/news')
+    .then(response => response.json())
+    .then(data => {
+        if (!data.items || data.items.length === 0) {
+            throw new Error('Nessuna notizia disponibile.');
+        }
+
+        titles = data.items.map(item => item.title);
+
+        document.getElementById('rssText').innerHTML =
+            "<p>" + titles.join('</p><p> &#8226; </p><p>') + "</p>";
+
+        scrollText();
+    })
+    .catch(error => console.error('Errore RSS:', error));
+}
+
+// JavaScript pour récupérer et faire défiler le flux RSS
+window.addEventListener('load', () => {
+    fetchRSS();
+    setInterval(fetchRSS, 600000); // Rafraîchir le flux toutes les 10 minutes (600 000 millisecondes)
+});
+
+function scrollText() {
+    let element = document.getElementById('rssText');
+    let textWidth = element.scrollWidth; // Correction de la largeur du texte
+    let screenWidth = window.innerWidth;
+    let pos = screenWidth;
+
+    function animate() {
+        pos -= 1; // Vous pouvez ajuster la vitesse en modifiant cette valeur
+        element.style.transform = 'translateX(' + pos + 'px)';
+        if (pos < -textWidth + screenWidth) {
+            pos = screenWidth;
+        }
+        requestAnimationFrame(animate);
+    }
+    animate();
+}
+</script>
+
+</body>
+</html>
