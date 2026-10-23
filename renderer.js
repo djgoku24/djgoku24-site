@@ -648,3 +648,42 @@ const radioTrackHistory = (() => {
     { once: true }
   );
 })();
+
+// ===== TWITCH: SITO WEB + APP LOCALE =====
+(() => {
+  function setupTwitchPlayer() {
+    const frame = document.getElementById("twitchPlayer");
+
+    if (!frame) return;
+
+    const hostname = window.location.hostname;
+
+    if (!hostname) {
+      console.warn(
+        "Twitch: la pagina deve essere aperta tramite il sito web " +
+        "oppure un server locale. Il caricamento file:// non è supportato."
+      );
+
+      return;
+    }
+
+    const url = new URL("https://player.twitch.tv/");
+
+    url.searchParams.set("channel", "djgoku24");
+    url.searchParams.set("parent", hostname);
+    url.searchParams.set("muted", "true");
+    url.searchParams.set("autoplay", "false");
+
+    frame.src = url.toString();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      setupTwitchPlayer,
+      { once: true }
+    );
+  } else {
+    setupTwitchPlayer();
+  }
+})();
