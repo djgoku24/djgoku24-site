@@ -1,0 +1,2337 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>DJ GOKU 24 Radio</title>
+
+  <link rel="stylesheet" href="style.css">
+
+
+<style>
+  :root {
+    color-scheme: dark;
+
+    --bg: #020914;
+    --panel: #030e1d;
+    --border: #173958;
+    --cyan: #20d8ff;
+    --blue: #0754ff;
+    --text: #f2f5ff;
+    --muted: #b7cbea;
+
+    --layout-gap: clamp(8px, 1vw, 14px);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background: var(--bg);
+  }
+
+  body {
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    margin: 0;
+    overflow: visible;
+
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", Arial, sans-serif;
+  }
+
+  button,
+  input,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  /* STRUTTURA GENERALE */
+
+  .app-shell {
+    display: grid;
+
+    grid-template-areas:
+      "topbar topbar topbar"
+      "sidebar main rightbar";
+
+    grid-template-columns:
+      clamp(170px, 16vw, 240px)
+      minmax(0, 1fr)
+      clamp(230px, 21vw, 300px);
+
+    grid-template-rows: 54px auto;
+
+    align-items: stretch;
+    gap: var(--layout-gap);
+
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    padding: 0 12px 12px;
+
+    background:
+      radial-gradient(
+        ellipse at 50% 0%,
+        rgba(0, 76, 164, .12),
+        transparent 65%
+      ),
+      #020710;
+  }
+
+  .topbar {
+    grid-area: topbar;
+    grid-column: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    min-width: 0;
+    padding: 0 10px;
+
+    background: linear-gradient(90deg, #041325, #020a16);
+    border-bottom: 1px solid #0b2037;
+  }
+
+  .window-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    min-width: 0;
+
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .window-brand > span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .top-logo {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    object-fit: contain;
+  }
+
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    flex-shrink: 0;
+    color: var(--muted);
+  }
+
+  #clock {
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  #fullscreenBtn {
+    width: 36px;
+    height: 34px;
+    padding: 0;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: transparent;
+    color: var(--muted);
+    font-size: 25px;
+  }
+
+  #fullscreenBtn:hover {
+    background: #102541;
+    color: white;
+  }
+
+  /* MENU SINISTRO */
+
+  .sidebar,
+  .rightbar {
+    min-width: 0;
+    min-height: 0;
+
+    border: 1px solid #102a47;
+    border-radius: 10px;
+
+    background: linear-gradient(160deg, #041020, #020b16 70%);
+    box-shadow: inset 0 0 18px rgba(0, 63, 137, .08);
+  }
+
+  .sidebar {
+    grid-area: sidebar;
+
+    display: flex;
+    flex-direction: column;
+
+    width: auto;
+    height: auto;
+    padding: 8px;
+    overflow: visible;
+  }
+
+  .sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .nav-btn {
+    display: flex;
+    align-items: center;
+    gap: clamp(8px, 1.2vw, 18px);
+
+    width: 100%;
+    min-width: 0;
+    min-height: clamp(48px, 6.2vh, 64px);
+    padding: 10px 12px;
+
+    border: 1px solid transparent;
+    border-radius: 9px;
+
+    background: transparent;
+    color: var(--text);
+
+    text-align: left;
+    font-size: clamp(16px, 1.4vw, 21px);
+
+    transition: background .2s, border-color .2s;
+  }
+
+  .nav-btn > span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    flex-shrink: 0;
+
+    color: #bad4ff;
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  .nav-btn:hover {
+    background: #09203b;
+    border-color: #153d69;
+  }
+
+  .nav-btn.active {
+    background: linear-gradient(110deg, #087eff, #0645f5);
+    box-shadow: 0 0 20px rgba(0, 94, 255, .2);
+    color: white;
+  }
+
+  .nav-btn.active > span {
+    color: white;
+  }
+
+  .side-brand {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+
+    min-height: 0;
+    padding: 24px 4px 28px;
+
+    text-align: center;
+  }
+
+  .side-brand img {
+    display: block;
+
+    width: 100%;
+    max-width: 210px;
+    height: auto;
+    max-height: clamp(130px, 25vh, 245px);
+
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(0, 153, 255, .25));
+  }
+
+  .side-slogan,
+  .hero-slogan {
+    font-family:
+      "Brush Script MT",
+      "Segoe Script",
+      "URW Chancery L",
+      cursive;
+
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .side-slogan {
+    color: #55dfff;
+    font-size: clamp(27px, 2.5vw, 41px);
+    line-height: 1.08;
+
+    transform: rotate(-8deg);
+
+    text-shadow:
+      0 0 4px #007bff,
+      0 0 12px #007bff;
+  }
+
+  /* CONTENUTO CENTRALE */
+
+  .main {
+    grid-area: main;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    padding: 0;
+    overflow: visible;
+
+    container-type: inline-size;
+    container-name: radio-main;
+  }
+
+  .page {
+    display: none;
+    min-width: 0;
+    height: auto;
+  }
+
+  .page.active {
+    display: block;
+  }
+
+  #radioPage.active {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #radioPage > * {
+    flex-shrink: 0;
+    min-width: 0;
+  }
+
+  /* BANNER: IMMAGINE INTERA, NON RITAGLIATA */
+
+  .hero {
+    position: relative;
+    display: block;
+    isolation: isolate;
+
+    width: 100%;
+    height: clamp(200px, 35vh, 440px);
+    min-height: 0;
+    aspect-ratio: auto;
+
+    overflow: hidden;
+    border: 1px solid #15375f;
+    border-radius: 10px;
+
+    background:
+      radial-gradient(
+        ellipse at 25% 50%,
+        #073c91,
+        #020a22 72%
+      );
+  }
+
+  .goku-art {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  .hero-shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    pointer-events: none;
+
+    background: linear-gradient(
+      90deg,
+      transparent 30%,
+      rgba(0, 3, 18, .12) 52%,
+      rgba(0, 3, 18, .68) 100%
+    );
+  }
+
+  .hero-brand {
+    position: absolute;
+    inset: 5% 2% 5% auto;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    width: 45%;
+    min-width: 0;
+
+    text-align: center;
+  }
+
+  .hero-logo {
+    display: block;
+
+    width: 100%;
+    height: auto;
+    max-height: 78%;
+    min-height: 0;
+    flex: 0 1 auto;
+
+    object-fit: contain;
+
+    filter: drop-shadow(0 0 13px rgba(0, 145, 255, .35));
+  }
+
+  .hero-slogan {
+    max-width: 100%;
+    margin: 0;
+
+    color: white;
+    font-size: clamp(18px, 3.8cqi, 44px);
+    line-height: 1.15;
+    white-space: normal;
+    text-wrap: balance;
+
+    text-shadow:
+      2px 3px 3px #000,
+      0 0 10px rgba(0, 136, 255, .5);
+  }
+
+  .panel {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    background: linear-gradient(135deg, #04101f, #020a15);
+    box-shadow: inset 0 0 12px rgba(0, 72, 145, .05);
+  }
+
+  /* IN ONDA */
+
+  .now-playing {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 12px;
+
+    min-height: 94px;
+    margin: 0;
+    padding: 12px 14px;
+
+    border-bottom: 0;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .mini-logo {
+    display: block;
+
+    width: clamp(58px, 8cqi, 88px);
+    height: clamp(58px, 8cqi, 88px);
+
+    object-fit: contain;
+  }
+
+  .track-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+
+    min-width: 0;
+  }
+
+  .track-copy strong {
+    font-size: clamp(18px, 3cqi, 29px);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+
+  .track-copy > span {
+    color: #45d9f5;
+    font-size: clamp(13px, 1.9cqi, 18px);
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .live-status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    width: 78px;
+
+    color: #00e949;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .live-status i {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+    background: #00e949;
+    box-shadow: 0 0 8px rgba(0, 233, 73, .3);
+  }
+
+  .live-status b {
+    display: block;
+    padding: 4px 10px;
+
+    border-radius: 5px;
+    background: linear-gradient(#1686ff, #004be6);
+    color: white;
+
+    font-size: 18px;
+  }
+
+  .time-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    align-self: stretch;
+    min-width: 125px;
+    padding-left: 12px;
+
+    border-left: 1px solid #10243b;
+    text-align: center;
+  }
+
+  .time-block strong {
+    font-size: clamp(27px, 4cqi, 37px);
+    line-height: 1.1;
+  }
+
+  .time-block > span {
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  /* COMANDI */
+
+  #radioPage .controls {
+    display: grid;
+    grid-template-columns:
+      minmax(36px, 1fr)
+      minmax(36px, 1fr)
+      auto
+      minmax(36px, 1fr)
+      minmax(110px, 2fr);
+
+    align-items: center;
+    justify-items: center;
+    gap: 10px;
+
+    min-height: 92px;
+    margin-top: -10px;
+    padding: 12px 16px;
+
+    border-top: 1px solid #10243b;
+    border-radius: 0 0 10px 10px;
+  }
+
+  .icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 46px;
+    max-width: 100%;
+    height: 46px;
+    padding: 0;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: transparent;
+    color: #bad2fa;
+    font-size: 28px;
+  }
+
+  .icon-btn:hover {
+    background: #0a2444;
+    color: white;
+  }
+
+  .play-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 68px;
+    height: 68px;
+    padding: 0;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: linear-gradient(135deg, #06bcff, #0754ff);
+    color: white;
+
+    font-size: 31px;
+    box-shadow: 0 0 22px rgba(0, 105, 255, .2);
+  }
+
+  .play-btn:hover {
+    filter: brightness(1.15);
+  }
+
+  .volume-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+    min-width: 0;
+    max-width: 250px;
+  }
+
+  .volume-area > span {
+    flex-shrink: 0;
+    color: #bad2fa;
+    font-size: 23px;
+  }
+
+  #volume {
+    width: 100%;
+    min-width: 0;
+    height: 8px;
+    margin: 0;
+
+    cursor: pointer;
+    accent-color: #06bdff;
+  }
+
+  /* EQUALIZZATORE E BRANI */
+
+  .radio-bottom {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .equalizer,
+  .recent-tracks {
+    min-width: 0;
+    height: clamp(125px, 19vh, 175px);
+  }
+
+  .equalizer {
+    display: flex;
+    align-items: flex-end;
+
+    overflow: hidden;
+    padding: 14px;
+
+    background: linear-gradient(#01050c, #020b18);
+  }
+
+  .bars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 4px;
+
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .bars > * {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 22px;
+
+    border-radius: 0;
+
+    background: repeating-linear-gradient(
+      to top,
+      #087dff 0,
+      #087dff 5px,
+      #021020 5px,
+      #021020 8px
+    );
+
+    box-shadow: 0 0 8px rgba(0, 116, 255, .2));
+  }
+
+  .recent-tracks {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .recent-title {
+    flex-shrink: 0;
+    margin: 0;
+    padding: 8px 12px;
+
+    background: linear-gradient(90deg, #052447, #03162d);
+    color: var(--cyan);
+
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  #recentTracks {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+  }
+
+  .recent-empty {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    min-height: 75px;
+    padding: 12px;
+
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .recent-empty > span {
+    color: #bdd4ff;
+    font-size: 28px;
+  }
+
+  .ticker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    min-height: 44px;
+    padding: 9px 12px;
+
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    background: linear-gradient(90deg, #020916, #06152a, #020916);
+    color: #159eff;
+
+    text-align: center;
+    font-size: clamp(12px, 1.65cqi, 18px);
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  .ticker > span {
+    color: #ecf3ff;
+  }
+
+  .setup-note {
+    margin: 0;
+    padding: 0 4px;
+
+    color: #8ba6c7;
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .setup-note:empty {
+    display: none;
+  }
+
+  /* PANNELLO DESTRO */
+
+  .rightbar {
+    grid-area: rightbar;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    width: auto;
+    height: auto;
+    padding: 10px;
+    overflow: visible;
+  }
+
+  .right-label {
+    padding: 10px 12px;
+
+    border-radius: 6px;
+    background: linear-gradient(100deg, #0869e8, #0641ad);
+    color: #f5f8ff;
+
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .right-now {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    min-width: 0;
+    padding: 8px 2px 16px;
+
+    border-bottom: 1px solid #10253d;
+  }
+
+  .right-now img {
+    width: clamp(76px, 8vw, 112px);
+    height: clamp(76px, 8vw, 112px);
+    flex-shrink: 0;
+
+    object-fit: contain;
+
+    border: 1px solid #124b8f;
+    border-radius: 10px;
+    background: #010610;
+  }
+
+  .right-now > div {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .right-now strong {
+    display: block;
+    margin-bottom: 8px;
+
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  .right-now small {
+    display: block;
+
+    color: #8beaff;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .next-label {
+    margin: 0;
+    padding: 3px 8px 0;
+
+    background: transparent;
+    color: #aaddf8;
+    font-size: 14px;
+  }
+
+  .next-track {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-height: 46px;
+    margin: 0 0 3px;
+    padding: 0 8px 10px;
+
+    border-bottom: 1px solid #10253d;
+    color: #d3def1;
+    font-size: 14px;
+  }
+
+  .next-track > span {
+    color: #bdd4ff;
+    font-size: 30px;
+  }
+
+  .quick-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 50px;
+    margin: 0;
+    padding: 10px 14px;
+
+    border: 1px solid #1b4474;
+    border-radius: 10px;
+
+    background: linear-gradient(110deg, #06203f, #031832);
+    color: #e2ebff;
+
+    text-align: left;
+    font-size: 17px;
+    line-height: 1.3;
+  }
+
+  .quick-btn > span {
+    display: inline-flex;
+    justify-content: center;
+
+    width: 27px;
+    flex-shrink: 0;
+
+    color: #bcd2ff;
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  .quick-btn.primary {
+    border-color: #0864ff;
+    background: linear-gradient(110deg, #087fff, #0649ff);
+    color: white;
+  }
+
+  .quick-btn.primary > span {
+    color: white;
+  }
+
+  .quick-btn:hover {
+    filter: brightness(1.2);
+  }
+
+  .right-footer {
+    margin-top: auto;
+    padding: 18px 5px 8px;
+
+    border-top: 1px solid #10253d;
+    color: #507fae;
+
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  /* ALTRE PAGINE */
+
+  .simple-page {
+    min-height: 300px;
+    padding: clamp(18px, 3vw, 32px);
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    background: #041020;
+    overflow-wrap: anywhere;
+  }
+
+  .eyebrow {
+    color: var(--cyan);
+    font-size: 13px;
+    letter-spacing: 2px;
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    margin-bottom: 18px;
+  }
+
+  .section-heading h1,
+  .simple-page h1 {
+    margin: 10px 0;
+    font-size: clamp(26px, 4cqi, 36px);
+  }
+
+  .section-heading p,
+  .simple-page p,
+  .twitch-hint {
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .section-heading em {
+    color: #a778ff;
+    font-style: normal;
+  }
+
+  .outline-link {
+    display: inline-block;
+    max-width: 100%;
+    padding: 11px 15px;
+
+    border: 1px solid #22558a;
+    border-radius: 8px;
+
+    color: #a9e8ff;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+
+  .outline-link:hover {
+    background: #0b2543;
+  }
+
+  .twitch-frame {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .twitch-placeholder {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 15px;
+    text-align: center;
+    overflow: auto;
+  }
+
+  .twitch-placeholder a {
+    color: #b9a0ff;
+  }
+
+  .twitch-icon {
+    color: #a778ff;
+    font-size: 44px;
+  }
+
+  #twitchPlayer {
+    position: relative;
+    display: block;
+
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .muted {
+    color: var(--muted);
+  }
+
+  /*
+    ADATTAMENTO ALLA LARGHEZZA REALE DEL CENTRO:
+    funziona anche quando le colonne laterali occupano spazio.
+  */
+
+  @container radio-main (max-width: 620px) {
+    .now-playing {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 10px;
+    }
+
+    .time-block {
+      grid-column: 1 / -1;
+
+      flex-direction: row;
+      justify-content: space-between;
+
+      width: 100%;
+      min-width: 0;
+      padding: 8px 0 0;
+
+      border-top: 1px solid #10243b;
+      border-left: 0;
+    }
+
+    .time-block strong {
+      font-size: 25px;
+    }
+
+    .hero {
+      height: clamp(190px, 39cqi, 260px);
+    }
+
+    .hero-slogan {
+      font-size: clamp(18px, 4.4cqi, 27px);
+    }
+
+    .track-copy strong {
+      font-size: 19px;
+    }
+
+    .track-copy > span {
+      font-size: 13px;
+    }
+  }
+
+  @container radio-main (max-width: 460px) {
+    #radioPage .controls {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      padding: 12px;
+    }
+
+    .volume-area {
+      grid-column: 1 / -1;
+      max-width: none;
+      padding: 6px 8px 2px;
+    }
+
+    .play-btn {
+      width: 60px;
+      height: 60px;
+      font-size: 28px;
+    }
+
+    .icon-btn {
+      width: 42px;
+      height: 44px;
+      font-size: 25px;
+    }
+
+    .radio-bottom {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .equalizer {
+      height: 120px;
+    }
+
+    .recent-tracks {
+      height: 130px;
+    }
+
+    .hero {
+      height: clamp(170px, 47cqi, 215px);
+    }
+
+    .hero-brand {
+      width: 46%;
+      right: 1%;
+    }
+
+    .mini-logo {
+      width: 48px;
+      height: 48px;
+    }
+
+    .now-playing {
+      padding: 10px;
+      gap: 8px;
+    }
+
+    .track-copy strong {
+      font-size: 16px;
+    }
+
+    .live-status {
+      width: 66px;
+      font-size: 12px;
+    }
+
+    .live-status b {
+      font-size: 15px;
+    }
+  }
+
+  /*
+    FINESTRA MEDIA:
+    il pannello destro va sotto, senza nascondere i comandi.
+  */
+
+  @media (max-width: 1150px) {
+    .app-shell {
+      grid-template-areas:
+        "topbar topbar"
+        "sidebar main"
+        "sidebar rightbar";
+
+      grid-template-columns:
+        clamp(155px, 20vw, 190px)
+        minmax(0, 1fr);
+
+      grid-template-rows: 52px auto auto;
+      align-content: start;
+    }
+
+    .sidebar {
+      align-self: stretch;
+    }
+
+    .side-brand {
+      flex: 0 0 auto;
+      margin-top: 22px;
+    }
+
+    .nav-btn {
+      gap: 9px;
+      min-height: 49px;
+      padding: 9px;
+      font-size: 16px;
+    }
+
+    .rightbar {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
+      gap: 10px;
+    }
+
+    .rightbar > .right-label:first-child {
+      grid-column: 1 / -1;
+    }
+
+    .right-now {
+      grid-column: 1 / -1;
+      padding: 3px 4px 12px;
+    }
+
+    .right-now img {
+      width: 68px;
+      height: 68px;
+    }
+
+    .right-now strong {
+      margin-bottom: 5px;
+    }
+
+    .next-label,
+    .next-track,
+    .right-footer {
+      grid-column: 1 / -1;
+    }
+
+    .next-label {
+      padding-top: 0;
+    }
+
+    .next-track {
+      min-height: 36px;
+      padding-bottom: 8px;
+    }
+
+    .right-footer {
+      margin-top: 0;
+      padding-top: 12px;
+    }
+
+    .quick-btn {
+      height: 100%;
+      min-height: 47px;
+      font-size: 16px;
+    }
+
+    .hero {
+      height: clamp(210px, 34vh, 330px);
+    }
+  }
+
+  /* FINESTRA STRETTA */
+
+  @media (max-width: 760px) {
+    .app-shell {
+      grid-template-areas:
+        "topbar"
+        "sidebar"
+        "main"
+        "rightbar";
+
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: 50px auto auto auto;
+
+      gap: 9px;
+      padding: 0 8px 10px;
+    }
+
+    .topbar {
+      padding: 0 3px;
+    }
+
+    .window-brand {
+      gap: 8px;
+      font-size: 16px;
+    }
+
+    .top-logo {
+      width: 32px;
+      height: 32px;
+      flex-basis: 32px;
+    }
+
+    .top-actions {
+      gap: 6px;
+    }
+
+    .sidebar {
+      display: block;
+      padding: 5px;
+    }
+
+    .sidebar nav {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+
+      width: 100%;
+      overflow-x: auto;
+      padding-bottom: 3px;
+
+      scrollbar-width: thin;
+      scrollbar-color: #1d5288 transparent;
+    }
+
+    .nav-btn {
+      flex: 1 0 78px;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+
+      width: auto;
+      min-height: 62px;
+      padding: 7px 6px;
+
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .nav-btn > span {
+      font-size: 24px;
+    }
+
+    .side-brand {
+      display: none;
+    }
+
+    .hero {
+      height: clamp(190px, 43vw, 300px);
+    }
+
+    .section-heading {
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .section-heading p {
+      margin-bottom: 0;
+    }
+
+    .simple-page {
+      min-height: 250px;
+      padding: 20px;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .window-brand {
+      font-size: 14px;
+    }
+
+    #clock {
+      font-size: 12px;
+    }
+
+    .rightbar {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .quick-btn {
+      font-size: 15px;
+    }
+
+    .ticker {
+      gap: 5px;
+      font-size: 11px;
+    }
+  }
+
+  /*
+    FINESTRA BASSA:
+    riduce le parti decorative senza rimpicciolire tutta l'app.
+  */
+
+  @media (max-height: 760px) and (min-width: 761px) {
+    .app-shell {
+      grid-template-rows: 46px auto;
+      gap: 8px;
+    }
+
+    .top-logo {
+      width: 30px;
+      height: 30px;
+      flex-basis: 30px;
+    }
+
+    .hero {
+      height: clamp(165px, 30vh, 225px);
+    }
+
+    .nav-btn {
+      min-height: 43px;
+      padding-top: 7px;
+      padding-bottom: 7px;
+    }
+
+    .side-brand {
+      gap: 12px;
+      margin-top: 0;
+      padding: 18px 4px;
+    }
+
+    .side-brand img {
+      max-height: 150px;
+    }
+
+    .side-slogan {
+      font-size: 29px;
+    }
+
+    .now-playing {
+      min-height: 78px;
+      padding-top: 9px;
+      padding-bottom: 9px;
+    }
+
+    .mini-logo {
+      width: 60px;
+      height: 60px;
+    }
+
+    #radioPage .controls {
+      min-height: 78px;
+      padding-top: 9px;
+      padding-bottom: 9px;
+    }
+
+    .play-btn {
+      width: 58px;
+      height: 58px;
+      font-size: 28px;
+    }
+
+    .equalizer,
+    .recent-tracks {
+      height: 120px;
+    }
+
+    .rightbar {
+      gap: 8px;
+    }
+
+    .right-now {
+      padding-top: 4px;
+      padding-bottom: 10px;
+    }
+
+    .right-now img {
+      width: 74px;
+      height: 74px;
+    }
+
+    .quick-btn {
+      min-height: 44px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .right-footer {
+      padding-top: 12px;
+    }
+  }
+
+  @media
+    (max-height: 760px) and
+    (min-width: 761px) and
+    (max-width: 1150px) {
+    .app-shell {
+      grid-template-rows: 46px auto auto;
+    }
+  }
+
+/* Banner proporzionato all'immagine: niente tagli o deformazioni */
+.app-shell .main #radioPage .hero {
+  position: relative;
+  display: block;
+
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: auto;
+
+  padding: 0;
+  overflow: hidden;
+}
+
+/* L'immagine determina l'altezza del banner */
+.app-shell .main #radioPage .hero .goku-art {
+  position: relative;
+  inset: auto;
+
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+
+  margin: 0;
+  padding: 0;
+
+  object-fit: initial;
+  object-position: center;
+}
+
+/* Logo e scritta restano sovrapposti sulla parte destra */
+.app-shell .main #radioPage .hero .hero-brand {
+  position: absolute;
+  inset: 5% 2% 5% auto;
+
+  width: 45%;
+  height: auto;
+  min-height: 0;
+  z-index: 2;
+}
+
+.app-shell .main #radioPage .hero .hero-logo {
+  width: 100%;
+  height: auto;
+  max-height: 78%;
+  min-height: 0;
+  object-fit: contain;
+}
+
+.app-shell .main #radioPage .hero .hero-slogan {
+  max-width: 100%;
+  font-size: clamp(16px, 3.8cqi, 44px);
+  line-height: 1.15;
+}
+
+/* Nasconde la barra superiore duplicata */
+.app-shell > .topbar {
+  display: none;
+}
+
+/* Finestra grande: tre colonne, senza riga superiore */
+.app-shell {
+  grid-template-areas: "sidebar main rightbar";
+  grid-template-rows: auto;
+
+  padding-top: 12px;
+}
+
+/* Finestra media */
+@media (max-width: 1150px) {
+  .app-shell {
+    grid-template-areas:
+      "sidebar main"
+      "sidebar rightbar";
+
+    grid-template-rows: auto auto;
+  }
+}
+
+/* Finestra stretta */
+@media (max-width: 760px) {
+  .app-shell {
+    grid-template-areas:
+      "sidebar"
+      "main"
+      "rightbar";
+
+    grid-template-rows: auto auto auto;
+
+    padding-top: 8px;
+  }
+}
+
+/* Icona Twitch */
+.twitch-logo {
+  display: block;
+  width: 27px;
+  height: 27px;
+  flex-shrink: 0;
+  color: #a970ff;
+}
+
+/* Icona bianca quando la pagina Twitch è selezionata */
+.nav-btn.active .twitch-logo {
+  color: #ffffff;
+}
+
+/* Dimensione nel menu compatto */
+@media (max-width: 760px) {
+  .nav-btn .twitch-logo {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+#currentTrack,
+#rightCurrentTrack {
+  display: block;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.4;
+}
+
+#currentTrack {
+  color: #45d9f5;
+}
+
+#rightCurrentTrack {
+  color: #8beaff;
+}
+
+/* Il contenitore non cresce insieme alla lista dei brani */
+.app-shell .main #radioPage .radio-bottom {
+  min-height: 0;
+  align-items: stretch;
+}
+
+/* Riquadro con altezza definita */
+.app-shell .main #radioPage .recent-tracks {
+  display: flex;
+  flex-direction: column;
+
+  height: clamp(125px, 19dvh, 175px);
+  min-height: 0;
+  max-height: 175px;
+
+  overflow: hidden;
+}
+
+/* Intestazione sempre visibile */
+.app-shell .main #radioPage .recent-title {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+/* Scorre soltanto l'elenco sotto l'intestazione */
+.app-shell .main #radioPage #recentTracks {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  height: auto;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Non trasferisce lo scroll alla pagina arrivati a fondo lista */
+  overscroll-behavior-y: contain;
+
+  scrollbar-width: thin;
+  scrollbar-color: #1876c9 #030e1d;
+}
+
+/* Barra di scorrimento */
+#recentTracks::-webkit-scrollbar {
+  width: 6px;
+}
+
+#recentTracks::-webkit-scrollbar-track {
+  background: #030e1d;
+}
+
+#recentTracks::-webkit-scrollbar-thumb {
+  background: #1876c9;
+  border-radius: 6px;
+}
+
+#recentTracks::-webkit-scrollbar-thumb:hover {
+  background: #20baff;
+}
+
+/* Riquadro più basso nelle finestre poco alte */
+@media (max-height: 600px) {
+  .app-shell .main #radioPage .recent-tracks {
+    height: 120px;
+    max-height: 120px;
+  }
+}
+
+/* Anticipazioni laut.fm: spazio fisso e compatto */
+.rightbar .next-track.laut-next {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  height: 84px;
+  min-height: 84px;
+  max-height: 84px;
+  flex-shrink: 0;
+
+  overflow: hidden;
+}
+
+.laut-next > span {
+  flex-shrink: 0;
+}
+
+.laut-next-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+#nextArtists {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  overflow: hidden;
+  overflow-wrap: anywhere;
+
+  color: #e2eeff;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.laut-next-copy small {
+  display: block;
+  margin-top: 4px;
+
+  color: #7fa6cc;
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+/* PAGINA PLAYLIST */
+#playlistPage {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+#playlistPage.active {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.playlist-heading {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.playlist-heading h1 {
+  margin: 8px 0;
+}
+
+.playlist-heading p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Scorre soltanto l'elenco */
+#playlistTracks {
+  flex: 0 1 auto;
+
+  height: clamp(160px, 48dvh, 520px);
+  min-height: 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
+
+  border: 1px solid #173958;
+  border-radius: 10px;
+  background: #020b18;
+
+  scrollbar-width: thin;
+  scrollbar-color: #1876c9 #030e1d;
+}
+
+.playlist-track-row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+
+  padding: 13px 15px;
+  border-bottom: 1px solid #102740;
+
+  color: #e5eeff;
+}
+
+.playlist-track-row:first-child {
+  background: rgba(0, 119, 255, 0.1);
+}
+
+.playlist-track-row:last-child {
+  border-bottom: 0;
+}
+
+.playlist-track-title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.playlist-track-time {
+  color: #9fc2ec;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+#playlistPage .playlist-note {
+  flex: 0 0 auto;
+  margin: 0;
+
+  color: #819fc0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+#playlistTracks::-webkit-scrollbar {
+  width: 6px;
+}
+
+#playlistTracks::-webkit-scrollbar-track {
+  background: #030e1d;
+}
+
+#playlistTracks::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: #1876c9;
+}
+
+@media (max-width: 480px) {
+  .playlist-track-row {
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 5px 9px;
+    padding: 11px;
+  }
+
+  .playlist-track-time {
+    grid-column: 2;
+  }
+}
+
+@media (max-height: 600px) {
+  #playlistTracks {
+    height: 40dvh;
+  }
+
+  #playlistPage {
+    padding: 14px;
+  }
+
+  #playlistPage.active {
+    gap: 10px;
+  }
+}
+</style>
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <header class="topbar">
+      <div class="window-brand">
+        <img
+          class="top-logo"
+          src="assets/logo.png"
+          alt=""
+        >
+        <span>DJ GOKU 24 Radio</span>
+      </div>
+
+      <div class="top-actions">
+        <span id="clock">--:--</span>
+        <button
+          type="button"
+          id="fullscreenBtn"
+          title="Schermo intero"
+          aria-label="Schermo intero"
+        >⛶</button>
+      </div>
+    </header>
+
+    <aside class="sidebar">
+      <nav aria-label="Menu principale">
+        <button
+          type="button"
+          class="nav-btn active"
+          data-page="radio"
+        >
+          <span aria-hidden="true">⌂</span>
+          Home
+        </button>
+
+        
+
+        <button
+          type="button"
+          class="nav-btn"
+          data-page="playlist"
+        >
+          <span aria-hidden="true">♫</span>
+          Playlist
+        </button>
+
+        <button
+          type="button"
+          class="nav-btn"
+          data-page="contacts"
+        >
+          <span aria-hidden="true">♟</span>
+          Contatti
+        </button>
+
+        <button
+          type="button"
+          class="nav-btn"
+          data-page="info"
+        >
+          <span aria-hidden="true">ⓘ</span>
+          Info
+        </button>
+
+        <button
+  type="button"
+  class="nav-btn"
+  data-page="twitch"
+>
+  <span aria-hidden="true">
+    <svg
+      class="twitch-logo"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      focusable="false"
+    >
+      <path d="M11.571 4.714h1.715v5.143h-1.715zm4.715 0H18v5.143h-1.714zM6 0 1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/>
+    </svg>
+  </span>
+  Twitch LIVE
+</button>
+      </nav>
+
+      <div class="side-brand">
+        <img
+          src="assets/logo.png"
+          alt="DJ GOKU 24 Radio"
+        >
+
+        <div class="side-slogan">
+          Music<br>
+          is my life
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+
+      <section id="radioPage" class="page active">
+
+        <div class="hero">
+          <img
+            class="goku-art"
+            src="assets/goku.png"
+            alt="Goku DJ"
+          >
+
+          <div class="hero-shade"></div>
+
+          <div class="hero-brand">
+            <img
+              class="hero-logo"
+              src="assets/logo.png"
+              alt="DJ GOKU 24 Radio"
+            >
+
+            <div class="hero-slogan">
+              Music is my life
+            </div>
+          </div>
+        </div>
+
+        <section class="now-playing panel">
+          <img
+            class="mini-logo"
+            src="assets/logo.png"
+            alt=""
+          >
+
+          <div class="track-copy">
+  <strong>DJ GOKU 24 Radio</strong>
+  <span id="currentTrack" aria-live="polite">
+    Caricamento brano in onda…
+  </span>
+</div>
+
+          <div class="live-status">
+            <i aria-hidden="true"></i>
+            ON AIR
+            <b>LIVE</b>
+          </div>
+
+          <div class="time-block">
+            <strong id="bigClock">--:--</strong>
+            <span id="dateText">Radio online</span>
+          </div>
+        </section>
+
+        <section
+          class="controls panel"
+          aria-label="Comandi radio"
+        >
+          <button
+            type="button"
+            class="icon-btn"
+            id="shuffleBtn"
+            title="Casuale"
+            aria-label="Casuale"
+          >⤨</button>
+
+          <button
+            type="button"
+            class="icon-btn"
+            id="prevBtn"
+            title="Precedente"
+            aria-label="Precedente"
+          >|◀</button>
+
+          <button
+            type="button"
+            class="play-btn"
+            id="playBtn"
+            title="Play/Pausa"
+            aria-label="Play/Pausa"
+          >▶</button>
+
+          <button
+            type="button"
+            class="icon-btn"
+            id="nextBtn"
+            title="Successivo"
+            aria-label="Successivo"
+          >▶|</button>
+
+          <div class="volume-area">
+            <span aria-hidden="true">🔊</span>
+
+            <input
+              id="volume"
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value="0.8"
+              aria-label="Volume"
+            >
+          </div>
+        </section>
+
+        <div class="radio-bottom">
+          <section
+            class="equalizer panel"
+            aria-label="Equalizzatore animato"
+          >
+            <div class="bars" id="bars"></div>
+          </section>
+
+          <section
+            class="recent-tracks panel"
+            aria-label="Ultimi brani"
+          >
+            <h2 class="recent-title">ULTIMI BRANI</h2>
+
+            <div
+  id="recentTracks"
+  tabindex="0"
+  role="region"
+  aria-label="Elenco degli ultimi brani"
+>
+              <div class="recent-empty">
+                <span aria-hidden="true">♫</span>
+                <div>
+                  In attesa dei dati<br>
+                  dei brani trasmessi…
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="ticker">
+          <span>DJ GOKU 24 RADIO</span>
+          <span aria-hidden="true">•</span>
+          MUSICA
+          <span aria-hidden="true">•</span>
+          ENERGIA
+          <span aria-hidden="true">•</span>
+          SEMPRE CON TE
+        </div>
+
+        <p class="setup-note" id="radioMessage">
+          Configura l'indirizzo diretto dello stream in
+          <code>renderer.js</code>
+          per attivare il player audio.
+        </p>
+      </section>
+
+      <section id="twitchPage" class="page">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">DJ GOKU 24</span>
+            <h1>Twitch <em>LIVE</em></h1>
+            <p>Le tue dirette, direttamente nell'app.</p>
+          </div>
+
+          <a
+            class="outline-link"
+            href="https://www.twitch.tv/djgoku24"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Apri il canale ↗
+          </a>
+        </div>
+
+        <div class="twitch-frame panel">
+          <div
+            id="twitchPlaceholder"
+            class="twitch-placeholder"
+          >
+            <div class="twitch-icon">▣</div>
+            <h2>DJGOKU24</h2>
+            <p>Caricamento del player Twitch…</p>
+
+            <a
+              href="https://www.twitch.tv/djgoku24"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Vai al canale Twitch
+            </a>
+          </div>
+
+          <iframe
+            id="twitchPlayer"
+            title="Diretta Twitch DJGOKU24"
+            allowfullscreen="true"
+            scrolling="no"
+            src="https://player.twitch.tv/?channel=djgoku24&parent=127.0.0.1&parent=localhost&muted=true"
+          ></iframe>
+        </div>
+
+        <p class="twitch-hint">
+          Se Twitch non mostra il video, controlla la connessione
+          e apri il canale dal pulsante qui sopra.
+          Il player mostrerà la diretta quando il canale sarà online.
+        </p>
+      </section>
+
+      <section
+  id="playlistPage"
+  class="page simple-page"
+>
+  <div class="playlist-heading">
+    <span class="eyebrow">DJ GOKU 24 • ZENO</span>
+
+    <h1>Playlist</h1>
+
+    <p>
+      Ultimi titoli ricevuti dalla radio.
+      Il più recente è in cima.
+    </p>
+  </div>
+
+  <div
+    id="playlistTracks"
+    class="playlist-tracks"
+    tabindex="0"
+    role="region"
+    aria-label="Cronologia brani Zeno"
+  >
+    <div class="recent-empty">
+      <span aria-hidden="true">♫</span>
+      <div>In attesa del primo titolo dalla radio…</div>
+    </div>
+  </div>
+
+  <p class="playlist-note">
+    La cronologia raccoglie i titoli ricevuti mentre
+    l’app è aperta. Gli orari indicano quando sono stati rilevati.
+  </p>
+</section>
+
+      <section
+        id="contactsPage"
+        class="page simple-page"
+      >
+        <span class="eyebrow">DJ GOKU 24</span>
+        <h1>Contatti</h1>
+        <p>Seguimi durante le dirette su Twitch.</p>
+
+        <a
+          class="outline-link"
+          href="https://www.twitch.tv/djgoku24"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Twitch @djgoku24 ↗
+        </a>
+      </section>
+
+      <section
+        id="infoPage"
+        class="page simple-page"
+      >
+        <span class="eyebrow">LA TUA RADIO</span>
+        <h1>Info</h1>
+        <p>DJ GOKU 24 Radio — Music is my life.</p>
+        <p class="muted">Versione iniziale dell'app Windows.</p>
+      </section>
+
+    </main>
+
+    <aside class="rightbar">
+      <div class="right-label">IN ONDA ORA</div>
+
+      <div class="right-now">
+        <img
+          src="assets/logo.png"
+          alt="DJ GOKU 24 Radio"
+        >
+
+        <div>
+          <strong>DJ GOKU 24 Radio</strong>
+          <small id="rightCurrentTrack">
+  Caricamento brano in onda…
+</small>
+        </div>
+      </div>
+
+      <div class="right-label next-label">
+  PROSSIMI ARTISTI
+</div>
+
+<div class="next-track laut-next">
+  <span aria-hidden="true">♫</span>
+
+  <div class="laut-next-copy">
+    <div
+      id="nextArtists"
+      role="status"
+      aria-live="polite"
+    >
+      Caricamento artisti…
+    </div>
+
+    <small></small>
+  </div>
+</div>
+
+      <button
+        type="button"
+        class="quick-btn primary"
+        id="rightPlay"
+      >
+        <span aria-hidden="true">▶</span>
+        Play / Pausa
+      </button>
+
+      <button
+        type="button"
+        class="quick-btn"
+        id="rightVolume"
+      >
+        <span aria-hidden="true">🔊</span>
+        Volume
+      </button>
+
+      <button
+        type="button"
+        class="quick-btn"
+        id="rightFullscreen"
+      >
+        <span aria-hidden="true">⛶</span>
+        Schermo intero
+      </button>
+
+      <button
+        type="button"
+        class="quick-btn"
+        id="refreshBtn"
+      >
+        <span aria-hidden="true">⟳</span>
+        Aggiorna
+      </button>
+
+    <button
+  type="button"
+  class="quick-btn twitch-quick"
+  id="openTwitch"
+>
+  <span aria-hidden="true">
+    <svg
+      class="twitch-logo"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      focusable="false"
+    >
+      <path d="M11.571 4.714h1.715v5.143h-1.715zm4.715 0H18v5.143h-1.714zM6 0 1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/>
+    </svg>
+  </span>
+  Twitch LIVE
+</button>
+
+      <div class="right-footer">
+        MUSIC • ENERGY • LIVE
+      </div>
+    </aside>
+
+  </div>
+
+  <audio
+    id="radioAudio"
+    preload="none"
+    crossorigin="anonymous"
+  ></audio>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

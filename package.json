@@ -1,0 +1,26 @@
+{
+  "name": "dj-goku-24-radio",
+  "version": "1.0.0",
+  "description": "DJ GOKU 24 Radio - app Windows Electron",
+  "main": "main.js",
+  "author": "DJ GOKU 24",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win portable"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "electron": "^34.3.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "it.djgoku24.radio",
+    "productName": "DJ GOKU 24 Radio",
+    "directories": { "output": "release" },
+    "files": ["main.js", "server.js", "index.html", "style.css", "renderer.js", "package.json"],
+    "win": { "target": ["portable"] }
+  }
+}
