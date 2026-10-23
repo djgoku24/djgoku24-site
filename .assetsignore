@@ -1,0 +1,8 @@
+# Esclude tutto per impostazione predefinita
+/*
+
+# Pubblica soltanto i file necessari al sito
+!/index.html
+!/style.css
+!/renderer.js
+!/assets/
