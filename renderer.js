@@ -272,77 +272,6 @@ if (RADIO_STREAM_URL.trim()) {
   setRadioMessage("Premi Play per ascoltare la radio.");
 }
 
-// ===== TITOLO DEL BRANO IN ONDA SU ZENO =====
-(() => {
-  const metadataUrl =
-    "https://api.zeno.fm/mounts/metadata/subscribe/y3y51xu8khruv";
-
-  const mainTitle = document.getElementById("currentTrack");
-  const sideTitle = document.getElementById("rightCurrentTrack");
-
-  if (!mainTitle && !sideTitle) return;
-
-  function showTrack(text) {
-    if (mainTitle) mainTitle.textContent = text;
-    if (sideTitle) sideTitle.textContent = text;
-  }
-
-  let receivedTitle = false;
-  let connection;
-
-  try {
-    connection = new EventSource(metadataUrl);
-  } catch (error) {
-    showTrack("Titolo del brano non disponibile");
-    console.error("Impossibile avviare i metadati Zeno:", error);
-    return;
-  }
-
-  connection.onmessage = (event) => {
-    try {
-      const data = JSON.parse(event.data);
-
-      const title =
-        typeof data.streamTitle === "string"
-          ? data.streamTitle.trim()
-          : "";
-
-      if (!title) return;
-
-      receivedTitle = true;
-showTrack(title);
-radioTrackHistory.add(title);
-    } catch (error) {
-      console.warn("Messaggio metadati Zeno non riconosciuto:", error);
-    }
-  };
-
-  connection.onerror = () => {
-    if (!receivedTitle) {
-      showTrack("In attesa del titolo del brano…");
-    }
-
-    // EventSource tenta automaticamente la riconnessione.
-    // Non creiamo nuove connessioni qui.
-  };
-
-  const waitingTimer = window.setTimeout(() => {
-    if (!receivedTitle) {
-      showTrack("Titolo del brano non disponibile");
-    }
-  }, 15000);
-
-  window.addEventListener(
-    "beforeunload",
-    () => {
-      window.clearTimeout(waitingTimer);
-      connection.close();
-    },
-    { once: true }
-  );
-})();
-
-// ===== ELENCO DEGLI ULTIMI BRANI RILEVATI =====
 // ===== CRONOLOGIA ZENO: ULTIMI BRANI + PLAYLIST =====
 const radioTrackHistory = (() => {
   // Mantiene la chiave precedente per recuperare i brani già salvati.
@@ -514,6 +443,104 @@ const radioTrackHistory = (() => {
 
   return { add };
 })();
+
+// ===== TITOLO DEL BRANO IN ONDA SU ZENO =====
+(() => {
+  const metadataUrl =
+    "https://api.zeno.fm/mounts/metadata/subscribe/y3y51xu8khruv";
+
+  const mainTitle = document.getElementById("currentTrack");
+  const sideTitle = document.getElementById("rightCurrentTrack");
+
+  if (!mainTitle && !sideTitle) return;
+
+  function showTrack(text) {
+    if (mainTitle) mainTitle.textContent = text;
+    if (sideTitle) sideTitle.textContent = text;
+  }
+
+  let receivedTitle = false;
+  let connection;
+
+  try {
+    connection = new EventSource(metadataUrl);
+  } catch (error) {
+    showTrack("Titolo del brano non disponibile");
+    console.error("Impossibile avviare i metadati Zeno:", error);
+    return;
+  }
+
+   let currentTitle = "";
+
+  // Conserva gli ultimi titoli per ignorare eventuali
+  // metadati precedenti rimandati da Zeno.
+  const recentTitles = [];
+  const RECENT_LIMIT = 6;
+
+  connection.onmessage = (event) => {
+    try {
+      const data = JSON.parse(event.data);
+
+      const title =
+        typeof data.streamTitle === "string"
+          ? data.streamTitle.trim()
+          : "";
+
+      if (!title) return;
+
+      // Non riscrive lo stesso titolo già in onda.
+      if (title === currentTitle) return;
+
+      // Ignora un titolo già trasmesso poco prima:
+      // Zeno può inviare nuovamente metadati vecchi.
+      if (recentTitles.includes(title)) {
+        console.info("Ignorato metadato Zeno precedente:", title);
+        return;
+      }
+
+      currentTitle = title;
+      receivedTitle = true;
+
+      recentTitles.unshift(title);
+
+      if (recentTitles.length > RECENT_LIMIT) {
+        recentTitles.pop();
+      }
+
+      showTrack(title);
+      radioTrackHistory.add(title);
+    } catch (error) {
+      console.warn("Messaggio metadati Zeno non riconosciuto:", error);
+    }
+  };
+
+  connection.onerror = () => {
+    if (!receivedTitle) {
+      showTrack("In attesa del titolo del brano…");
+    }
+
+    // EventSource tenta automaticamente la riconnessione.
+    // Non creiamo nuove connessioni qui.
+  };
+
+  const waitingTimer = window.setTimeout(() => {
+    if (!receivedTitle) {
+      showTrack("Titolo del brano non disponibile");
+    }
+  }, 15000);
+
+  window.addEventListener(
+    "beforeunload",
+    () => {
+      window.clearTimeout(waitingTimer);
+      connection.close();
+    },
+    { once: true }
+  );
+})();
+
+
+
 
 // ===== PROSSIMI ARTISTI DA LAUT.FM =====
 (() => {
