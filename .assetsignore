@@ -1,8 +1,22 @@
-# Esclude tutto per impostazione predefinita
-/*
+node_modules/
+.git/
+.wrangler/
+dist/
+release/
+out/
 
-# Pubblica soltanto i file necessari al sito
-!/index.html
-!/style.css
-!/renderer.js
-!/assets/
+main.js
+server.js
+package.json
+package-lock.json
+bun.lock
+bun.lockb
+
+wrangler.json
+wrangler.jsonc
+wrangler.toml
+
+*.exe
+*.msi
+*.apk
+*.log
