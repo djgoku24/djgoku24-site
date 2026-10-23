@@ -444,100 +444,215 @@ const radioTrackHistory = (() => {
   return { add };
 })();
 
-// ===== TITOLO DEL BRANO IN ONDA SU ZENO =====
+// ===== TITOLO: LAUT.FM + PRIORITÀ ZENO LIVE =====
 (() => {
-  const metadataUrl =
+  const LAUT_CURRENT_URL =
+    "https://api.laut.fm/station/djgoku24/current_song";
+
+  const ZENO_METADATA_URL =
     "https://api.zeno.fm/mounts/metadata/subscribe/y3y51xu8khruv";
+
+  const LAUT_REFRESH_MS = 20000;
+  const ZENO_PRIORITY_MS = 5 * 60 * 1000;
+  const RECENT_MINUTES = 120;
 
   const mainTitle = document.getElementById("currentTrack");
   const sideTitle = document.getElementById("rightCurrentTrack");
 
   if (!mainTitle && !sideTitle) return;
 
+  const STORAGE_KEY = "djgoku24.trackHistory.v1";
+
+  let currentTitle = "";
+  let lastZenoUpdate = 0;
+
+  let lautTimer = null;
+  let lautController = null;
+  let zenoConnection = null;
+  let stopped = false;
+
   function showTrack(text) {
     if (mainTitle) mainTitle.textContent = text;
     if (sideTitle) sideTitle.textContent = text;
   }
 
-  let receivedTitle = false;
-  let connection;
+  function getSavedHistory() {
+    try {
+      const saved = JSON.parse(
+        localStorage.getItem(STORAGE_KEY) || "[]"
+      );
 
-  try {
-    connection = new EventSource(metadataUrl);
-  } catch (error) {
-    showTrack("Titolo del brano non disponibile");
-    console.error("Impossibile avviare i metadati Zeno:", error);
-    return;
+      return Array.isArray(saved) ? saved : [];
+    } catch (error) {
+      return [];
+    }
   }
 
-   let currentTitle = "";
+  function isRecentlyPlayed(title) {
+    const now = Date.now();
+    const limit = RECENT_MINUTES * 60 * 1000;
 
-  // Conserva gli ultimi titoli per ignorare eventuali
-  // metadati precedenti rimandati da Zeno.
-  const recentTitles = [];
-  const RECENT_LIMIT = 6;
+    return getSavedHistory().some((item) => {
+      return (
+        item &&
+        typeof item.title === "string" &&
+        item.title.trim() === title &&
+        Number.isFinite(item.timestamp) &&
+        now - item.timestamp < limit
+      );
+    });
+  }
 
-  connection.onmessage = (event) => {
-    try {
-      const data = JSON.parse(event.data);
+  function acceptTitle(title, source) {
+    if (!title || title === currentTitle) return;
 
-      const title =
-        typeof data.streamTitle === "string"
-          ? data.streamTitle.trim()
+    currentTitle = title;
+
+    if (source === "zeno") {
+      lastZenoUpdate = Date.now();
+    }
+
+    showTrack(title);
+    radioTrackHistory.add(title);
+  }
+
+  function getLautTitle(data) {
+    if (!data || typeof data !== "object") return "";
+
+    const artist =
+      typeof data.artist === "string"
+        ? data.artist
+        : typeof data.artist?.name === "string"
+          ? data.artist.name
           : "";
+
+    const title =
+      typeof data.title === "string" ? data.title : "";
+
+    return [artist, title]
+      .map((part) => part.trim())
+      .filter(Boolean)
+      .join(" - ");
+  }
+
+  async function updateFromLaut() {
+    if (stopped) return;
+
+    lautController = new AbortController();
+
+    const timeout = window.setTimeout(() => {
+      lautController?.abort();
+    }, 10000);
+
+    try {
+      const response = await fetch(LAUT_CURRENT_URL, {
+        signal: lautController.signal,
+        cache: "no-store"
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `API Laut.fm: HTTP ${response.status}`
+        );
+      }
+
+      const data = await response.json();
+      const title = getLautTitle(data);
 
       if (!title) return;
 
-      // Non riscrive lo stesso titolo già in onda.
-      if (title === currentTitle) return;
+      const zenoHasPriority =
+        Date.now() - lastZenoUpdate < ZENO_PRIORITY_MS;
 
-      // Ignora un titolo già trasmesso poco prima:
-      // Zeno può inviare nuovamente metadati vecchi.
-      if (recentTitles.includes(title)) {
-        console.info("Ignorato metadato Zeno precedente:", title);
-        return;
-      }
+      if (zenoHasPriority) return;
 
-      currentTitle = title;
-      receivedTitle = true;
-
-      recentTitles.unshift(title);
-
-      if (recentTitles.length > RECENT_LIMIT) {
-        recentTitles.pop();
-      }
-
-      showTrack(title);
-      radioTrackHistory.add(title);
+      acceptTitle(title, "laut");
     } catch (error) {
-      console.warn("Messaggio metadati Zeno non riconosciuto:", error);
-    }
-  };
+      if (!currentTitle) {
+        showTrack("In attesa del titolo del brano…");
+      }
 
-  connection.onerror = () => {
-    if (!receivedTitle) {
-      showTrack("In attesa del titolo del brano…");
+      console.warn("Aggiornamento titolo Laut.fm:", error);
+    } finally {
+      window.clearTimeout(timeout);
+      lautController = null;
+
+      if (!stopped) {
+        lautTimer = window.setTimeout(
+          updateFromLaut,
+          LAUT_REFRESH_MS
+        );
+      }
+    }
+  }
+
+  function startZenoListener() {
+    try {
+      zenoConnection = new EventSource(ZENO_METADATA_URL);
+    } catch (error) {
+      console.error("Impossibile avviare i metadati Zeno:", error);
+      return;
     }
 
-    // EventSource tenta automaticamente la riconnessione.
-    // Non creiamo nuove connessioni qui.
-  };
+    zenoConnection.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
 
-  const waitingTimer = window.setTimeout(() => {
-    if (!receivedTitle) {
-      showTrack("Titolo del brano non disponibile");
-    }
-  }, 15000);
+        const title =
+          typeof data.streamTitle === "string"
+            ? data.streamTitle.trim()
+            : "";
+
+        if (!title) return;
+
+        if (isRecentlyPlayed(title)) {
+          console.info(
+            "Ignorato metadato Zeno già trasmesso di recente:",
+            title
+          );
+          return;
+        }
+
+        acceptTitle(title, "zeno");
+      } catch (error) {
+        console.warn(
+          "Messaggio metadati Zeno non riconosciuto:",
+          error
+        );
+      }
+    };
+
+    zenoConnection.onerror = () => {
+      // EventSource si riconnette da solo.
+    };
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+        updateFromLaut();
+        startZenoListener();
+      },
+      { once: true }
+    );
+  } else {
+    updateFromLaut();
+    startZenoListener();
+  }
 
   window.addEventListener(
     "beforeunload",
     () => {
-      window.clearTimeout(waitingTimer);
-      connection.close();
+      stopped = true;
+      window.clearTimeout(lautTimer);
+      lautController?.abort();
+      zenoConnection?.close();
     },
     { once: true }
   );
 })();
+ 
 
 
 
