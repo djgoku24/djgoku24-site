@@ -1,84 +1,276 @@
-// Inserisci qui l'URL DIRETTO dello stream audio (non l'indirizzo della pagina web).
-// Esempio: const RADIO_STREAM_URL = "https://server.example/radio.mp3";
+// ===== CONFIGURAZIONE RADIO =====
 const RADIO_STREAM_URL = "http://stream.zeno.fm/y3y51xu8khruv";
 
-const audio = document.getElementById('radioAudio');
-const playBtn = document.getElementById('playBtn');
-const radioMessage = document.getElementById('radioMessage');
-const volume = document.getElementById('volume');
+const audio = document.getElementById("radioAudio");
+const playBtn = document.getElementById("playBtn");
+const radioMessage = document.getElementById("radioMessage");
+const volume = document.getElementById("volume");
+
 let playing = false;
+let starting = false;
+
+function setRadioMessage(text) {
+  if (radioMessage) {
+    radioMessage.textContent = text;
+  }
+}
 
 function setPlayState(isPlaying) {
   playing = isPlaying;
-  playBtn.textContent = isPlaying ? 'Ⅱ' : '▶';
+
+  if (playBtn) {
+    playBtn.textContent = isPlaying ? "Ⅱ" : "▶";
+
+    playBtn.setAttribute(
+      "aria-label",
+      isPlaying ? "Pausa radio" : "Riproduci radio"
+    );
+  }
+
+  // Aggiorna soltanto l'icona, mantenendo il testo del pulsante.
+  const rightPlayIcon = document.querySelector("#rightPlay > span");
+
+  if (rightPlayIcon) {
+    rightPlayIcon.textContent = isPlaying ? "Ⅱ" : "▶";
+  }
 }
+
+// ===== PLAY / PAUSA =====
 async function toggleRadio() {
+  if (!audio || starting) return;
+
   if (!RADIO_STREAM_URL.trim()) {
-    radioMessage.innerHTML = 'Il design è pronto. Per attivare Play, inserisci l’URL diretto dello stream in <code>renderer.js</code>. Il link del sito radio da solo potrebbe non essere un link audio.';
+    setRadioMessage(
+      "Inserisci l'indirizzo diretto dello stream in renderer.js."
+    );
     return;
   }
-  if (playing) {
+
+  if (!audio.paused) {
     audio.pause();
     setPlayState(false);
-  } else {
-    try {
-      if (!audio.src) audio.src = RADIO_STREAM_URL.trim();
-      audio.volume = Number(volume.value);
-      await audio.play();
-      setPlayState(true);
-      radioMessage.textContent = 'DJ GOKU 24 Radio è in riproduzione.';
-    } catch (err) {
-      radioMessage.textContent = 'Non riesco ad avviare lo stream. Verifica l’URL audio e la connessione.';
-      setPlayState(false);
+    setRadioMessage("Radio in pausa.");
+    return;
+  }
+
+  starting = true;
+
+  try {
+    if (!audio.getAttribute("src")) {
+      audio.src = RADIO_STREAM_URL.trim();
     }
+
+    if (volume) {
+      audio.volume = Number(volume.value);
+    }
+
+    setRadioMessage("Connessione alla radio…");
+
+    await audio.play();
+
+    setPlayState(!audio.paused);
+
+    if (!audio.paused) {
+      setRadioMessage("DJ GOKU 24 Radio è in riproduzione.");
+    }
+  } catch (error) {
+    console.error("Avvio radio non riuscito:", error);
+
+    setPlayState(false);
+
+    setRadioMessage(
+      "Non riesco ad avviare lo stream. Verifica la connessione e l'indirizzo audio."
+    );
+  } finally {
+    starting = false;
   }
 }
-playBtn.addEventListener('click', toggleRadio);
-document.getElementById('rightPlay').addEventListener('click', toggleRadio);
-volume.addEventListener('input', () => { audio.volume = Number(volume.value); });
-document.getElementById('rightVolume').addEventListener('click', () => {
-  volume.focus();
-  volume.scrollIntoView({behavior:'smooth', block:'center'});
+
+playBtn?.addEventListener("click", toggleRadio);
+
+document.getElementById("rightPlay")?.addEventListener(
+  "click",
+  toggleRadio
+);
+
+audio?.addEventListener("play", () => {
+  setPlayState(true);
 });
-function toggleFullscreen() {
-  if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
-  else document.exitFullscreen?.();
+
+audio?.addEventListener("pause", () => {
+  setPlayState(false);
+});
+
+audio?.addEventListener("ended", () => {
+  setPlayState(false);
+});
+
+audio?.addEventListener("error", () => {
+  setPlayState(false);
+  setRadioMessage("Errore durante il caricamento dello stream.");
+});
+
+// ===== VOLUME DEL PLAYER CENTRALE =====
+volume?.addEventListener("input", () => {
+  if (audio) {
+    audio.volume = Number(volume.value);
+  }
+});
+
+// Il pulsante destro non è più presente.
+// Il collegamento resta facoltativo.
+document.getElementById("rightVolume")?.addEventListener(
+  "click",
+  () => {
+    volume?.focus();
+  }
+);
+
+// ===== SCHERMO INTERO =====
+async function toggleFullscreen() {
+  try {
+    if (!document.fullscreenElement) {
+      await document.documentElement.requestFullscreen?.();
+    } else {
+      await document.exitFullscreen?.();
+    }
+  } catch (error) {
+    console.warn("Schermo intero non disponibile:", error);
+  }
 }
-document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
-document.getElementById('rightFullscreen').addEventListener('click', toggleFullscreen);
-document.getElementById('refreshBtn').addEventListener('click', () => {
-  if (playing) { audio.pause(); setPlayState(false); }
-  if (RADIO_STREAM_URL.trim()) { audio.src = RADIO_STREAM_URL.trim(); toggleRadio(); }
-  const frame = document.getElementById('twitchPlayer');
-  frame.src = frame.src;
-});
-document.getElementById('openTwitch').addEventListener('click', () => showPage('twitch'));
-document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('click', () => showPage(btn.dataset.page)));
+
+document.getElementById("fullscreenBtn")?.addEventListener(
+  "click",
+  toggleFullscreen
+);
+
+document.getElementById("rightFullscreen")?.addEventListener(
+  "click",
+  toggleFullscreen
+);
+
+// ===== AGGIORNA PLAYER =====
+document.getElementById("refreshBtn")?.addEventListener(
+  "click",
+  async () => {
+    if (audio && !starting && RADIO_STREAM_URL.trim()) {
+      audio.pause();
+      setPlayState(false);
+
+      audio.src = RADIO_STREAM_URL.trim();
+      audio.load();
+
+      await toggleRadio();
+    }
+
+    const frame = document.getElementById("twitchPlayer");
+    const frameSrc = frame?.getAttribute("src");
+
+    if (frame && frameSrc) {
+      frame.src = frameSrc;
+    }
+  }
+);
+
+// ===== NAVIGAZIONE PAGINE =====
 function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const page = document.getElementById(name + 'Page') || document.getElementById('radioPage');
-  page.classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.page === name));
+  const requestedPage = document.getElementById(name + "Page");
+
+  const page =
+    requestedPage || document.getElementById("radioPage");
+
+  if (!page) return;
+
+  const activeName = requestedPage ? name : "radio";
+
+  document.querySelectorAll(".page").forEach((section) => {
+    section.classList.toggle("active", section === page);
+  });
+
+  document.querySelectorAll(".nav-btn").forEach((button) => {
+    button.classList.toggle(
+      "active",
+      button.dataset.page === activeName
+    );
+  });
 }
+
+document.querySelectorAll(".nav-btn").forEach((button) => {
+  button.addEventListener("click", () => {
+    showPage(button.dataset.page);
+  });
+});
+
+// Il pulsante destro Twitch è stato rimosso.
+// Twitch rimane accessibile dal menu sinistro.
+document.getElementById("openTwitch")?.addEventListener(
+  "click",
+  () => showPage("twitch")
+);
+
+// ===== OROLOGIO E DATA =====
 function updateClock() {
   const now = new Date();
-  const time = now.toLocaleTimeString('it-IT', {hour:'2-digit', minute:'2-digit'});
-  document.getElementById('clock').textContent = time;
-  document.getElementById('bigClock').textContent = time;
-  document.getElementById('dateText').textContent = now.toLocaleDateString('it-IT', {day:'2-digit', month:'long', year:'numeric'});
+
+  const time = now.toLocaleTimeString("it-IT", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
+  const smallClock = document.getElementById("clock");
+  const bigClock = document.getElementById("bigClock");
+  const dateText = document.getElementById("dateText");
+
+  if (smallClock) smallClock.textContent = time;
+  if (bigClock) bigClock.textContent = time;
+
+  if (dateText) {
+    dateText.textContent = now.toLocaleDateString("it-IT", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric"
+    });
+  }
 }
+
 updateClock();
 setInterval(updateClock, 1000);
-const bars = document.getElementById('bars');
-for (let i=0; i<48; i++) {
-  const bar = document.createElement('span');
-  bar.className = 'bar';
-  bar.style.setProperty('--h', `${18 + Math.random()*78}%`);
-  bar.style.setProperty('--dur', `${.35 + Math.random()*.8}s`);
-  bar.style.setProperty('--delay', `${Math.random()*.7}s`);
-  bars.appendChild(bar);
+
+// ===== EQUALIZZATORE =====
+const bars = document.getElementById("bars");
+
+if (bars) {
+  bars.replaceChildren();
+
+  for (let i = 0; i < 48; i++) {
+    const bar = document.createElement("span");
+
+    bar.className = "bar";
+
+    bar.style.setProperty(
+      "--h",
+      `${18 + Math.random() * 78}%`
+    );
+
+    bar.style.setProperty(
+      "--dur",
+      `${0.35 + Math.random() * 0.8}s`
+    );
+
+    bar.style.setProperty(
+      "--delay",
+      `${Math.random() * 0.7}s`
+    );
+
+    bars.appendChild(bar);
+  }
 }
-if (RADIO_STREAM_URL.trim()) radioMessage.textContent = 'Premi Play per ascoltare la radio.';
+
+setPlayState(false);
+
+if (RADIO_STREAM_URL.trim()) {
+  setRadioMessage("Premi Play per ascoltare la radio.");
+}
 
 // ===== TITOLO DEL BRANO IN ONDA SU ZENO =====
 (() => {
