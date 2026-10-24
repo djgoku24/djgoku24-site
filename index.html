@@ -2503,22 +2503,23 @@ max-height: 32px;
     <aside class="rightbar">
       <div class="right-label">IN ONDA ORA</div>
 
-     <div class="right-now">
+          <div class="right-now">
   <div class="cover right-cover">
     <img
       id="onAirCoverImage"
+      class="on-air-cover"
       src="assets/logo.png"
       alt="Copertina del brano in onda"
     >
   </div>
 
-        <div>
-          <strong>DJ GOKU 24 Radio</strong>
-          <small id="rightCurrentTrack">
-  Caricamento brano in onda…
-</small>
-        </div>
-      </div>
+  <div>
+    <strong>DJ GOKU 24 Radio</strong>
+    <small id="rightCurrentTrack">
+      Caricamento brano in onda…
+    </small>
+  </div>
+</div>
 
       <div class="right-label next-label">
   PROSSIMI ARTISTI
@@ -2615,23 +2616,39 @@ max-height: 32px;
 ></script>
 
 <script>
-const onAirCovers = document.querySelectorAll(".on-air-cover");
+  const onAirCovers = document.querySelectorAll(".on-air-cover");
 
   const onAirDefaultCover = "assets/logo.png";
   const onAirCoverUrl =
     "https://cover.lautbox.eu/?mode=lautfm&station=djgoku24";
 
   let onAirCoverTimer = null;
+  let liveCoverMode = false;
 
   function refreshOnAirCover() {
-    onAirCoverImage.onerror = () => {
-      onAirCoverImage.onerror = null;
-      onAirCoverImage.src = onAirDefaultCover;
-    };
+    const newSrc = liveCoverMode
+      ? onAirDefaultCover
+      : onAirCoverUrl + "&_t=" + Date.now();
 
-    onAirCoverImage.src =
-      onAirCoverUrl + "&_t=" + Date.now();
+    onAirCovers.forEach((img) => {
+      img.onerror = () => {
+        img.onerror = null;
+        img.src = onAirDefaultCover;
+      };
+
+      img.src = newSrc;
+    });
   }
+
+  window.updateRadioCoverMode = function (isLive) {
+    const nextMode = Boolean(isLive);
+
+    if (nextMode === liveCoverMode) return;
+
+    liveCoverMode = nextMode;
+
+    refreshOnAirCover();
+  };
 
   function startOnAirCoverRefresh() {
     refreshOnAirCover();
