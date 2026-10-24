@@ -110,6 +110,96 @@ audio?.addEventListener("error", () => {
   setRadioMessage("Errore durante il caricamento dello stream.");
 });
 
+// ===== CONTINUA A SUONARE DURANTE IL PASSAGGIO RELAY/LIVE =====
+let lastAudioTime = 0;
+let lastAudioProgress = Date.now();
+let streamResumeTimer = null;
+let lastStreamResume = 0;
+let userStartedRadio = false;
+
+function isRadioPlaying() {
+  return (
+    audio &&
+    !audio.paused &&
+    !audio.ended &&
+    audio.readyState !== 0
+  );
+}
+
+async function resumeStream(reason) {
+  if (!audio || starting) return;
+
+  if (!userStartedRadio) return;
+  const now = Date.now();
+
+  // Evita riconnessioni ripetute troppo ravvicinate.
+  if (now - lastStreamResume < 5000) return;
+
+  lastStreamResume = now;
+
+  console.warn("Riconnessione automatica stream:", reason);
+
+  try {
+    setRadioMessage("Riconnessione automatica alla radio…");
+
+    audio.src = RADIO_STREAM_URL.trim();
+    audio.load();
+
+    await audio.play();
+
+    lastAudioTime = audio.currentTime || 0;
+    lastAudioProgress = Date.now();
+
+    setPlayState(true);
+    setRadioMessage("DJ GOKU 24 Radio è in riproduzione.");
+  } catch (error) {
+    console.warn("Ripresa automatica non riuscita:", error);
+
+    window.clearTimeout(streamResumeTimer);
+
+    streamResumeTimer = window.setTimeout(() => {
+      resumeStream("secondo tentativo");
+    }, 3000);
+  }
+}
+
+audio?.addEventListener("play", () => {
+  userStartedRadio = true;
+});
+
+
+// Controlla ogni secondo se l’audio sta davvero avanzando.
+setInterval(() => {
+  if (!isRadioPlaying()) return;
+
+  const currentTime = audio.currentTime || 0;
+
+  if (currentTime > lastAudioTime) {
+    lastAudioTime = currentTime;
+    lastAudioProgress = Date.now();
+    return;
+  }
+
+  // Se è fermo da più di 3 secondi, riconnette.
+  if (Date.now() - lastAudioProgress > 3000) {
+    resumeStream("audio fermo");
+  }
+}, 1000);
+
+audio?.addEventListener("error", () => {
+  console.error(
+    "Errore audio Zeno:",
+    audio.error?.code,
+    audio.error?.message
+  );
+
+  if (userStartedRadio) {
+    resumeStream("errore stream");
+  }
+});
+
+
+
 // ===== VOLUME DEL PLAYER CENTRALE =====
 volume?.addEventListener("input", () => {
   if (audio) {
@@ -453,7 +543,7 @@ const radioTrackHistory = (() => {
     "https://api.zeno.fm/mounts/metadata/subscribe/y3y51xu8khruv";
 
   const LAUT_REFRESH_MS = 20000;
-  const ZENO_PRIORITY_MS = 5 * 60 * 1000;
+  const ZENO_PRIORITY_MS = 10000;;
   const RECENT_MINUTES = 120;
 
   const mainTitle = document.getElementById("currentTrack");
@@ -465,11 +555,14 @@ const radioTrackHistory = (() => {
 
   let currentTitle = "";
   let lastZenoUpdate = 0;
+  let zenoFirstCheckUntil = Date.now() + 4000;
+let zenoHasSentTitle = false;
 
   let lautTimer = null;
   let lautController = null;
   let zenoConnection = null;
   let stopped = false;
+   let liveLock = false;
 
   function showTrack(text) {
     if (mainTitle) mainTitle.textContent = text;
@@ -503,19 +596,34 @@ const radioTrackHistory = (() => {
     });
   }
 
-  function acceptTitle(title, source) {
+      function acceptTitle(title, source) {
     if (!title || title === currentTitle) return;
 
     currentTitle = title;
 
+    const isLiveTitle =
+      /on\s*air/i.test(title) 
+      
+
     if (source === "zeno") {
+      zenoHasSentTitle = true;
       lastZenoUpdate = Date.now();
     }
 
     showTrack(title);
-    radioTrackHistory.add(title);
-  }
 
+    // Se è il titolo live Zeno, mostra il logo
+    // invece della cover Laut.fm.
+    if (typeof window.updateRadioCoverMode === "function") {
+      window.updateRadioCoverMode(
+        source === "zeno" && isLiveTitle
+      );
+    }
+
+    if (!isLiveTitle) {
+      radioTrackHistory.add(title);
+    }
+  }
   function getLautTitle(data) {
     if (!data || typeof data !== "object") return "";
 
@@ -537,6 +645,8 @@ const radioTrackHistory = (() => {
 
   async function updateFromLaut() {
     if (stopped) return;
+
+      if (liveLock) return;
 
     lautController = new AbortController();
 
@@ -561,10 +671,24 @@ const radioTrackHistory = (() => {
 
       if (!title) return;
 
-      const zenoHasPriority =
+                const zenoHasPriority =
         Date.now() - lastZenoUpdate < ZENO_PRIORITY_MS;
 
       if (zenoHasPriority) return;
+
+      if (
+        !zenoHasSentTitle &&
+        Date.now() < zenoFirstCheckUntil
+      ) {
+        return;
+      }
+
+      // Quando Laut.fm riprende il controllo dopo la live,
+      // la cover deve tornare alla copertina del brano,
+      // anche se il titolo non è cambiato.
+      if (typeof window.updateRadioCoverMode === "function") {
+        window.updateRadioCoverMode(false);
+      }
 
       acceptTitle(title, "laut");
     } catch (error) {
@@ -587,14 +711,15 @@ const radioTrackHistory = (() => {
   }
 
   function startZenoListener() {
-    try {
-      zenoConnection = new EventSource(ZENO_METADATA_URL);
-    } catch (error) {
-      console.error("Impossibile avviare i metadati Zeno:", error);
-      return;
-    }
+  let zenoTimer = null;
+  let connection = null;
 
-    zenoConnection.onmessage = (event) => {
+  function openZenoConnection() {
+    if (stopped) return;
+
+    connection = new EventSource(ZENO_METADATA_URL);
+
+    connection.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
 
@@ -605,15 +730,26 @@ const radioTrackHistory = (() => {
 
         if (!title) return;
 
-        if (isRecentlyPlayed(title)) {
-          console.info(
-            "Ignorato metadato Zeno già trasmesso di recente:",
-            title
-          );
-          return;
-        }
+        const isLiveTitle =
+          /on\s*air/i.test(title);
 
+            if (isLiveTitle) {
+        liveLock = true;
         acceptTitle(title, "zeno");
+        return;
+      }
+
+      liveLock = false;
+
+      if (isRecentlyPlayed(title)) {
+        console.info(
+          "Ignorato metadato Zeno già trasmesso di recente:",
+          title
+        );
+        return;
+      }
+
+      acceptTitle(title, "zeno");
       } catch (error) {
         console.warn(
           "Messaggio metadati Zeno non riconosciuto:",
@@ -622,11 +758,30 @@ const radioTrackHistory = (() => {
       }
     };
 
-    zenoConnection.onerror = () => {
+    connection.onerror = () => {
       // EventSource si riconnette da solo.
     };
+
+    // Riconnette periodicamente per rileggere il metadato
+    // corrente anche se Zeno non invia un nuovo evento.
+    zenoTimer = window.setTimeout(() => {
+      connection?.close();
+      openZenoConnection();
+    }, 30000);
   }
 
+  openZenoConnection();
+
+  window.addEventListener(
+    "beforeunload",
+    () => {
+      stopped = true;
+      window.clearTimeout(zenoTimer);
+      connection?.close();
+    },
+    { once: true }
+  );
+}
   if (document.readyState === "loading") {
     document.addEventListener(
       "DOMContentLoaded",
