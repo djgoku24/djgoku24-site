@@ -3,406 +3,351 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>METEO PALERMO ULTRA PREMIUM</title>
+<title>Meteo</title>
 
 <style>
-
-:root{
-    --glass:rgba(255,255,255,.08);
-    --white:#fff;
-}
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:"Segoe UI",sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",sans-serif}
 
 body{
-    height:100vh;
-    overflow:hidden;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:transparent;
+  width:100%;
+  height:100vh;
+  overflow:hidden;
+  background:linear-gradient(160deg,#071a33,#0b1030 60%,#05070f);
+  color:#fff;
 }
 
-/* VIDEO BACKGROUND */
-
-.bg{
-    position:fixed;
-    inset:0;
-    background:
-    radial-gradient(circle at 20% 20%,#26408f 0%, transparent 40%),
-    radial-gradient(circle at 80% 30%,#4b1d95 0%, transparent 30%),
-    radial-gradient(circle at 50% 80%,#123b81 0%, transparent 35%),
-    linear-gradient(180deg,#030712,#081126);
-    animation:bgMove 20s ease infinite;
+.card{
+  height:100%;
+  padding:14px 14px 10px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
 }
 
-@keyframes bgMove{
-    0%{filter:hue-rotate(0deg);}
-    50%{filter:hue-rotate(20deg);}
-    100%{filter:hue-rotate(0deg);}
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
+.city{font-size:17px;font-weight:700}
 
-
-/* CARD */
-
-.weather{
-    width:100%;
-    max-width:950px;
-    height:540px;
-
-    position:relative;
-    overflow:hidden;
-    flex-shrink:0;
-
-    background:
-    linear-gradient(135deg,
-    rgba(10,20,45,.75),
-    rgba(15,30,60,.55));
-
-    backdrop-filter:blur(30px);
-    -webkit-backdrop-filter:blur(30px);
-
-    border:1px solid rgba(255,255,255,.25);
-    border-radius:35px;
-
-    box-shadow:
-    0 15px 50px rgba(0,0,0,.45),
-    0 0 40px rgba(74,144,226,.15),
-    inset 0 1px 0 rgba(255,255,255,.2);
-
-    color:white;
-
-    transform-origin:center center;
+.clock{
+  font-size:13px;
+  opacity:.85;
+  background:rgba(255,255,255,.08);
+  padding:4px 10px;
+  border-radius:10px;
 }
 
-
-
-/* HEADER */
-
-.header{
-    text-align:center;
-    padding-top:15px;
+.middle{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
 }
 
-.city{
-    font-size:28px;
-    font-weight:700;
-}
+.temp{font-size:50px;font-weight:200;line-height:1}
 
-.date{
-    margin-top:5px;
-    font-size:13px;
-    opacity:.8;
-}
-
-/* MAIN */
-
-.main{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:30px;
-    padding:20px;
-}
-
-.temp{
-    font-size:80px;
-    font-weight:300;
-    min-width:180px;
-}
-
-/* ICONA METEO */
-
-.weather-icon{
-    width:120px;
-    height:100px;
-    flex-shrink:0;
+/* ===== ICONA ANIMATA ===== */
+.wx{
+  position:relative;
+  width:110px;
+  height:95px;
+  flex-shrink:0;
 }
 
 .sun{
-    position:absolute;
-    top:6%;
-    right:12%;
+  position:absolute;
+  top:6px;
+  right:22px;
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  background:#ffd500;
+  box-shadow:0 0 18px #ffd500,0 0 42px #ffd500;
+  animation:pulse 4s infinite;
+}
 
-    width:clamp(36px, 9vw, 60px);
-    height:clamp(36px, 9vw, 60px);
+.moon{
+  position:absolute;
+  top:6px;
+  right:26px;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:#e8eefc;
+  box-shadow:0 0 18px rgba(200,220,255,.8);
+}
 
-    border-radius:50%;
-    background:#ffd500;
-
-    box-shadow:
-    0 0 20px #ffd500,
-    0 0 50px #ffd500;
-
-    animation:pulse 4s infinite;
+.moon::after{
+  content:'';
+  position:absolute;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:#0b1030;
+  top:-7px;
+  left:-9px;
 }
 
 .cloud{
-    position:absolute;
-    bottom:18%;
-    left:8%;
-
-    width:clamp(60px, 16vw, 100px);
-    height:clamp(26px, 7vw, 42px);
-    background:white;
-    border-radius:100px;
+  position:absolute;
+  bottom:16px;
+  left:8px;
+  width:78px;
+  height:32px;
+  background:#fff;
+  border-radius:100px;
+  animation:drift 6s ease-in-out infinite;
 }
 
 .cloud::before{
-    content:'';
-    position:absolute;
-    width:70px;
-    height:70px;
-    left:15px;
-    top:-35px;
-    background:white;
-    border-radius:50%;
+  content:'';
+  position:absolute;
+  width:44px;
+  height:44px;
+  left:10px;
+  top:-22px;
+  background:#fff;
+  border-radius:50%;
 }
 
 .cloud::after{
-    content:'';
-    position:absolute;
-    width:55px;
-    height:55px;
-    right:15px;
-    top:-25px;
-    background:white;
-    border-radius:50%;
+  content:'';
+  position:absolute;
+  width:34px;
+  height:34px;
+  right:12px;
+  top:-16px;
+  background:#fff;
+  border-radius:50%;
 }
 
-/* GOCCE */
+@keyframes drift{
+  50%{transform:translateX(5px)}
+}
+
+@keyframes pulse{
+  50%{transform:scale(1.08)}
+}
 
 .rain{
-    position:absolute;
-    left:65px;
-    bottom:0;
+  position:absolute;
+  left:26px;
+  bottom:0;
 }
 
 .rain span{
-    display:inline-block;
-    width:3px;
-    height:25px;
-    margin:4px;
-    background:#7dd3fc;
-    animation:rain .8s infinite linear;
+  display:inline-block;
+  width:3px;
+  height:16px;
+  margin:3px;
+  background:#7dd3fc;
+  border-radius:2px;
+  animation:rain .8s infinite linear;
 }
 
 .rain span:nth-child(2){animation-delay:.2s}
 .rain span:nth-child(3){animation-delay:.4s}
 
 @keyframes rain{
-    0%{
-        opacity:0;
-        transform:translateY(0);
-    }
-    100%{
-        opacity:1;
-        transform:translateY(20px);
-    }
+  0%{opacity:0;transform:translateY(-6px)}
+  100%{opacity:1;transform:translateY(14px)}
 }
 
-@keyframes pulse{
-    50%{
-        transform:scale(1.08);
-    }
+.snow span{
+  display:inline-block;
+  width:5px;
+  height:5px;
+  margin:4px;
+  background:#fff;
+  border-radius:50%;
+  animation:snow 2s infinite linear;
 }
 
-/* CONDIZIONI */
+.snow span:nth-child(2){animation-delay:.5s}
+.snow span:nth-child(3){animation-delay:1s}
 
-.conditions{
-    flex:1;
-    text-align:left;
+@keyframes snow{
+  0%{opacity:0;transform:translateY(-8px)}
+  100%{opacity:1;transform:translateY(16px)}
 }
 
-.status{
-    font-size:clamp(22px, 5vw, 34px);
+.bolt{
+  position:absolute;
+  left:38px;
+  bottom:2px;
+  width:0;
+  height:0;
+  border-left:9px solid transparent;
+  border-right:9px solid transparent;
+  border-top:22px solid #ffd500;
+  filter:drop-shadow(0 0 10px #ffd500);
+  animation:flash 1.2s infinite;
 }
 
-.stats{
-    display:flex;
-    gap:25px;
-
-    margin-top:15px;
-
-    font-size:15px;
-
-    flex-wrap:nowrap;
-    align-items:center;
+@keyframes flash{
+  0%,100%{opacity:.2}
+  50%{opacity:1}
 }
 
-
-/* FORECAST */
+.info{text-align:right;font-size:12px;opacity:.9;line-height:1.5}
+.status{font-size:16px;font-weight:600;margin-bottom:2px}
 
 .forecast{
-    position:absolute;
-    bottom:0;
-    left:0;
-
-    width:100%;
-    height:110px;
-
-    display:flex;
-    justify-content:space-evenly;
-    align-items:center;
-
-    background:rgba(255,255,255,.05);
-    border-top:1px solid rgba(255,255,255,.15);
-    padding:0 8px;
-}
-}
-.hour{
-    text-align:center;
-    transition:.3s;
+  display:flex;
+  justify-content:space-between;
+  gap:4px;
+  background:rgba(255,255,255,.06);
+  border-top:1px solid rgba(255,255,255,.12);
+  padding:8px 6px;
 }
 
-.hour:hover{
-    transform:scale(1.1);
+.hour{text-align:center;flex:1}
+.hour-time{font-size:11px;opacity:.75}
+.hour-icon{font-size:20px;margin:3px 0}
+.hour-temp{font-size:12px;font-weight:700}
+
+.loading{
+  display:flex;align-items:center;justify-content:center;
+  height:100%;opacity:.7;font-size:14px;
 }
-
-
-
-.hour-icon{
-    font-size:26px;
-}
-
-.hour-time,
-.hour-temp{
-    font-size:13px;
-}
-
-/* OROLOGIO DIGITALE */
-
-.clock{
-    position:absolute;
-    top:20px;
-    right:25px;
-
-    padding:10px 18px;
-
-    border-radius:15px;
-
-    background:rgba(255,255,255,.08);
-}
-
-
-
-
 </style>
 </head>
 <body>
 
-
-
-<div class="weather">
-
-<div class="clock" id="clock"></div>
-
-<div class="header">
-    <div class="city">Palermo, Sicilia</div>
-    <div class="date">Condizioni Meteo Live</div>
-</div>
-
-<div class="main">
-
-    <div class="temp">17°C</div>
-
-    <div class="weather-icon">
-
-        <div class="sun"></div>
-
-        <div class="cloud"></div>
-
-        <div class="rain">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-
-    </div>
-
-    <div class="conditions">
-
-        <div class="status">Pioggia</div>
-
-        <div class="stats">
-            <div>💨 8.7 m/s</div>
-            <div>💧 77%</div>
-            <div>🧭 763 mmHg</div>
-        </div>
-
-    </div>
-
-</div>
-
-<div class="forecast">
-
-    <div class="hour">
-        <div class="hour-time">18:00</div>
-        <div class="hour-icon">🌦️</div>
-        <div class="hour-temp">17°</div>
-    </div>
-
-    <div class="hour">
-        <div class="hour-time">19:00</div>
-        <div class="hour-icon">🌦️</div>
-        <div class="hour-temp">17°</div>
-    </div>
-
-    <div class="hour">
-        <div class="hour-time">20:00</div>
-        <div class="hour-icon">🌦️</div>
-        <div class="hour-temp">16°</div>
-    </div>
-
-    <div class="hour">
-        <div class="hour-time">21:00</div>
-        <div class="hour-icon">🌧️</div>
-        <div class="hour-temp">16°</div>
-    </div>
-
-    <div class="hour">
-        <div class="hour-time">22:00</div>
-        <div class="hour-icon">🌧️</div>
-        <div class="hour-temp">16°</div>
-    </div>
-
-    <div class="hour">
-        <div class="hour-time">23:00</div>
-        <div class="hour-icon">🌧️</div>
-        <div class="hour-temp">15°</div>
-    </div>
-
-</div>
-
+<div class="card" id="card">
+  <div class="loading">Caricamento meteo…</div>
 </div>
 
 <script>
+/* ===== CAMBIA SOLO QUESTO PER OGNI CITTÀ ===== */
+const CONFIG = {
+  city:"Palermo",
+  region:"Sicilia",
+  lat:38.1157,
+  lon:13.3615
+};
+/* ============================================== */
 
-// OROLOGIO
+const LABELS = {
+  0:"Sereno",1:"Poco nuvoloso",2:"Parzialmente nuvoloso",3:"Molto nuvoloso",
+  45:"Nebbia",48:"Nebbia",51:"Pioviggine",53:"Pioviggine",55:"Pioviggine",
+  61:"Pioggia debole",63:"Pioggia",65:"Pioggia forte",
+  71:"Neve debole",73:"Neve",75:"Neve forte",
+  80:"Rovesci deboli",81:"Rovesci",82:"Rovesci forti",
+  95:"Temporale",96:"Temporale",99:"Temporale forte"
+};
 
-function updateClock(){
-    const now = new Date();
-
-    document.getElementById('clock')
-    .innerHTML=
-    now.toLocaleTimeString('it-IT',{
-        hour:'2-digit',
-        minute:'2-digit'
-    });
+function kindOf(code){
+  if(code===0||code===1) return "clear";
+  if(code===2||code===3||code===45||code===48) return "cloud";
+  if(code>=51&&code<=67) return "rain";
+  if(code>=71&&code<=77) return "snow";
+  if(code>=80&&code<=82) return "rain";
+  if(code>=95) return "storm";
+  return "cloud";
 }
 
-updateClock();
-setInterval(updateClock,1000);
+function iconHTML(code,isDay){
+  const kind = kindOf(code);
+  let html = "";
 
+  if(kind==="clear"){
+    html = isDay ? `<div class="sun"></div>` : `<div class="moon"></div>`;
+  }
+  else if(kind==="cloud"){
+    html = (isDay ? `<div class="sun"></div>` : `<div class="moon"></div>`) + `<div class="cloud"></div>`;
+  }
+  else if(kind==="rain"){
+    html = `<div class="cloud"></div>
+            <div class="rain"><span></span><span></span><span></span></div>`;
+  }
+  else if(kind==="snow"){
+    html = `<div class="cloud"></div>
+            <div class="rain snow"><span></span><span></span><span></span></div>`;
+  }
+  else if(kind==="storm"){
+    html = `<div class="cloud"></div>
+            <div class="rain"><span></span><span></span><span></span></div>
+            <div class="bolt"></div>`;
+  }
 
+  return `<div class="wx">${html}</div>`;
+}
 
+function render(data){
+  const c = data.current;
+  const h = data.hourly;
+  const nowHour = new Date(c.time).getHours();
 
+  const hours = [];
+  for(let i=0;i<h.time.length && hours.length<5;i++){
+    const d = new Date(h.time[i]);
+    if(d.getHours() >= nowHour){
+      hours.push({
+        time:d.getHours().toString().padStart(2,"0")+":00",
+        code:h.weather_code[i],
+        temp:Math.round(h.temperature_2m[i])
+      });
+    }
+  }
+
+  document.getElementById("card").innerHTML = `
+    <div class="top">
+      <div class="city">${CONFIG.city}, ${CONFIG.region}</div>
+      <div class="clock" id="clock"></div>
+    </div>
+
+    <div class="middle">
+      <div class="temp">${Math.round(c.temperature_2m)}°C</div>
+      ${iconHTML(c.weather_code, c.is_day===1)}
+      <div class="info">
+        <div class="status">${LABELS[c.weather_code] || "Meteo"}</div>
+        <div>💨 ${c.wind_speed_10m} km/h</div>
+        <div>💧 ${c.relative_humidity_2m}%</div>
+      </div>
+    </div>
+
+    <div class="forecast">
+      ${hours.map(h => `
+        <div class="hour">
+          <div class="hour-time">${h.time}</div>
+          <div class="hour-icon">${iconHTML(h.code,1)}</div>
+          <div class="hour-temp">${h.temp}°</div>
+        </div>`).join("")}
+    </div>
+  `;
+
+  function tick(){
+    document.getElementById("clock").textContent =
+      new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"});
+  }
+  tick();
+  setInterval(tick,1000);
+}
+
+async function load(){
+  const url =
+    `https://api.open-meteo.com/v1/forecast` +
+    `?latitude=${CONFIG.lat}&longitude=${CONFIG.lon}` +
+    `&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m,is_day` +
+    `&hourly=temperature_2m,weather_code` +
+    `&forecast_days=1&timezone=auto`;
+
+  try{
+    const res = await fetch(url);
+    render(await res.json());
+  }catch(e){
+    document.getElementById("card").innerHTML =
+      `<div class="loading">Meteo non disponibile</div>`;
+  }
+}
+
+load();
+setInterval(load, 10 * 60 * 1000);
 </script>
 
 </body>
