@@ -393,10 +393,7 @@ setInterval(updateClock,1000);
 
 function fitCard(){
     const card = document.querySelector('.weather');
-    const scale = Math.min(
-        window.innerWidth / 950,
-        window.innerHeight / 540
-    );
+    const scale = window.innerWidth / 950;
     card.style.transform = 'scale(' + scale + ')';
 }
 
