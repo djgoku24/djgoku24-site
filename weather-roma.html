@@ -1,24 +1,360 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="utf-8">
-  <title>Meteo Roma</title>
-  <style>
-    html, body {
-      margin: 0;
-      background: transparent;
-      overflow: hidden;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Meteo Roma</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",sans-serif}
+
+body{
+  width:100%;
+  height:100vh;
+  overflow:hidden;
+  color:#fff;
+  transition:background 1s ease;
+  background-size:cover;
+  background-position:center;
+}
+
+/* SFONDI DINAMICI */
+body.day-clear{
+  background-image:url("https://app3.weatherwidget.org/skin/img/bg/clear_day.jpg");
+}
+
+body.night-clear{
+  background-image:url("https://app3.weatherwidget.org/skin/img/bg/clear_night.jpg");
+}
+
+body.cloudy{
+  background-image:url("https://app3.weatherwidget.org/skin/img/bg/cloudy_day.jpg");
+}
+
+body.night-cloudy{
+  background-image:url("https://app3.weatherwidget.org/skin/img/bg/clear_night.jpg");
+}
+
+body.rain{
+  background-image:url("https://app3.weatherwidget.org/skin/img/bg/rainy_day.jpg");
+}
+
+body.night-rain{
+  background-image:url("https://app3.weatherwidget.org/skin/img/bg/rainy_night.jpg");
+}
+
+body.day-snow{
+  background-image:url("https://app3.weatherwidget.org/skin/img/bg/cloudy_day_snow.jpg");
+}
+
+body.night-snow{
+  background-image:url("https://app3.weatherwidget.org/skin/img/bg/cloudy_night_snow.jpg");
+}
+
+body.storm{
+  background-image:url("https://.../storm.jpg");
+}
+
+.card{
+  height:100%;
+  padding:10px 12px 8px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  background:rgba(0,0,0,.18);
+}
+
+/* CITTÀ CENTRATA */
+.city{
+  text-align:center;
+  font-size:15px;
+  font-weight:700;
+  text-shadow:0 1px 4px rgba(0,0,0,.4);
+}
+
+/* TEMPERATURA + ICONA + DESCRIZIONE */
+.main{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+}
+
+.temp{
+  font-size:48px;
+  font-weight:300;
+  line-height:1;
+  text-shadow:0 1px 4px rgba(0,0,0,.4);
+}
+
+.desc{
+  font-size:14px;
+  line-height:1.4;
+  max-width:130px;
+  text-shadow:0 1px 3px rgba(0,0,0,.4);
+}
+
+/* ===== ICONE METEOCON ===== */
+.wx-icon{
+  width:70px;
+  height:70px;
+}
+
+.hour-icon .wx-icon{
+  width:34px;
+  height:34px;
+}
+
+/* PREVISIONI ORARIE */
+.forecast{
+  position:relative;
+  background:rgba(0,0,0,.25);
+  border-radius:10px;
+  padding:8px 30px;
+}
+
+.hours-track{
+  display:flex;
+  gap:14px;
+  overflow-x:auto;
+  scroll-behavior:smooth;
+  scrollbar-width:none;
+}
+
+.hours-track::-webkit-scrollbar{
+  display:none;
+}
+
+.hour{
+  flex:0 0 calc((100% - 42px) / 4);
+  min-width:0;
+  text-align:center;
+  padding:2px 0;
+}
+
+.hour-time{
+  font-size:11px;
+  opacity:.85;
+}
+
+.hour-icon{
+  height:38px;
+  margin:4px 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.hour-temp{
+  font-size:13px;
+  font-weight:700;
+}
+
+.loading{
+  display:flex;align-items:center;justify-content:center;
+  height:100%;opacity:.8;font-size:13px;
+}
+
+
+.arrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:20px;
+  height:20px;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.18);
+  color:#fff;
+  font-size:11px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.arrow:hover{background:rgba(255,255,255,.32)}
+.arrow-left{left:3px}
+.arrow-right{right:3px}
+
+
+
+.stars{
+  position:absolute;
+  top:10px;
+  right:14px;
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:#fff;
+  opacity:.9;
+  box-shadow:
+    -14px 10px 0 -1px #fff,
+    6px 18px 0 -1px #fff;
+  z-index:1;
+  animation:twinkle 2.5s infinite;
+}
+
+@keyframes twinkle{
+  0%,100%{opacity:.9}
+  50%{opacity:.4}
+}
+
+
+</style>
 </head>
 <body>
-  <div id="ww_555ca156799b2" v='1.3' loc='id' a='{"t":"horizontal","lang":"it","sl_lpl":1,"ids":["wl2405"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
-    Altre previsioni:
-    <a href="https://oneweather.org/it/rome/10_days/" id="ww_555ca156799b2_u" target="_blank">
-      Meteo 10 giorni roma
-    </a>
-  </div>
 
-  <script async src="https://app3.weatherwidget.org/js/?id=ww_555ca156799b2"></script>
+<div class="card" id="card">
+  <div class="loading">Caricamento meteo…</div>
+</div>
+
+<script>
+/* ===== CAMBIA SOLO QUESTO PER OGNI CITTÀ ===== */
+const CONFIG = {
+ city:"Roma",
+  lat:41.8919,
+  lon:12.5113
+};
+/* ============================================== */
+
+const LABELS = {
+  0:"Sereno",1:"Poco nuvoloso",2:"Parzialmente nuvoloso",3:"Molto nuvoloso",
+  45:"Nebbia",48:"Nebbia",
+  51:"Pioviggine",53:"Pioviggine",55:"Pioviggine",
+  61:"Pioggia debole",63:"Pioggia",65:"Pioggia forte",
+  71:"Neve",73:"Neve",75:"Neve forte",
+  80:"Rovesci deboli",81:"Rovesci",82:"Rovesci forti",
+  95:"Temporale",96:"Temporale",99:"Temporale forte"
+};
+
+function kindOf(code){
+  if(code===0||code===1) return "clear";
+  if(code===2||code===3||code===45||code===48) return "cloud";
+  if((code>=51&&code<=67)||(code>=80&&code<=82)) return "rain";
+  if(code>=71&&code<=77) return "snow";
+  if(code>=95) return "storm";
+  return "cloud";
+}
+
+function bgClass(code,isDay){
+  const k = kindOf(code);
+  if(k==="storm") return "storm";
+  if(k==="snow") return isDay ? "day-snow" : "night-snow";
+  if(k==="rain") return isDay ? "rain" : "night-rain";
+  if(k==="cloud") return isDay ? "cloudy" : "night-cloudy";
+  return isDay ? "day-clear" : "night-clear";
+}
+
+function iconHTML(code,isDay){
+  const k = kindOf(code);
+  let icon = "cloudy";
+
+  if(k==="clear"){
+    icon = isDay ? "clear-day" : "clear-night";
+  }
+  else if(k==="cloud"){
+    icon = isDay ? "partly-cloudy-day" : "partly-cloudy-night";
+  }
+  else if(k==="rain"){
+    icon = "rain";
+  }
+  else if(k==="snow"){
+    icon = "snow";
+  }
+  else if(k==="storm"){
+    icon = isDay ? "thunderstorms-day" : "thunderstorms-night";
+  }
+
+ return `<img class="wx-icon" src="https://cdn.meteocons.com/3.0.0-next.10/svg/fill/${icon}.svg" alt="">`;
+}
+
+function render(data){
+  const c = data.current;
+  const h = data.hourly;
+  const isDay = c.is_day === 1;
+  const nowHour = new Date(c.time).getHours();
+
+  document.body.className = bgClass(c.weather_code, isDay);
+
+const hours = [];
+const now = new Date();
+const start = new Date(
+  now.getFullYear(),
+  now.getMonth(),
+  now.getDate(),
+  now.getHours()
+);
+
+for(let i=0;i<h.time.length && hours.length<24;i++){
+  const d = new Date(h.time[i]);
+
+  if(d >= start){
+  hours.push({
+    t:d.getHours().toString().padStart(2,"0")+":00",
+    c:h.weather_code[i],
+    day:h.is_day[i],
+    temp:Math.round(h.temperature_2m[i])
+  });
+}
+}
+  document.getElementById("card").innerHTML = `
+    <div class="city">${CONFIG.city}</div>
+
+    <div class="main">
+      <div class="temp">${Math.round(c.temperature_2m)}°</div>
+      ${iconHTML(c.weather_code, isDay)}
+      <div class="desc">${LABELS[c.weather_code] || "Meteo"}</div>
+    </div>
+
+   <div class="forecast">
+  <button class="arrow arrow-left" onclick="scrollHours(-1)">‹</button>
+  <div class="hours-track" id="hoursTrack">
+    ${hours.map(h=>`
+      <div class="hour">
+        <div class="hour-time">${h.t}</div>
+        <div class="hour-icon">${iconHTML(h.c, h.day)}</div>
+        <div class="hour-temp">${h.temp}°</div>
+      </div>`).join("")}
+  </div>
+  <button class="arrow arrow-right" onclick="scrollHours(1)">›</button>
+</div>
+  `;
+}
+
+async function load(){
+  const url =
+    `https://api.open-meteo.com/v1/forecast` +
+    `?latitude=${CONFIG.lat}&longitude=${CONFIG.lon}` +
+    `&current=temperature_2m,weather_code,is_day` +
+    `&hourly=temperature_2m,weather_code,is_day` +
+    `&forecast_days=2&timezone=auto`;
+
+  try{
+    const res = await fetch(url);
+    render(await res.json());
+  }catch(e){
+    document.getElementById("card").innerHTML =
+      `<div class="loading">Meteo non disponibile</div>`;
+  }
+}
+
+load();
+setInterval(load, 10 * 60 * 1000);
+
+
+
+function scrollHours(dir){
+  const track = document.getElementById('hoursTrack');
+  if(!track) return;
+  const hour = track.querySelector('.hour');
+  if(!hour) return;
+  track.scrollBy({
+    left: dir * (hour.offsetWidth + 4),
+    behavior:'smooth'
+  });
+}
+</script>
+
 </body>
 </html>
