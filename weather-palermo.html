@@ -18,10 +18,10 @@ body{
 
 .card{
   height:100%;
-  padding:14px 14px 10px;
+  padding:10px 12px 8px;
   display:flex;
   flex-direction:column;
-  gap:8px;
+  gap:6px;
 }
 
 .top{
@@ -30,32 +30,39 @@ body{
   align-items:center;
 }
 
-.city{font-size:17px;font-weight:700}
+.city{font-size:15px;font-weight:700}
 
 .clock{
-  font-size:13px;
+  font-size:12px;
   opacity:.85;
   background:rgba(255,255,255,.08);
-  padding:4px 10px;
-  border-radius:10px;
+  padding:3px 8px;
+  border-radius:8px;
 }
 
 .middle{
   flex:1;
+  min-height:0;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:8px;
+  gap:6px;
 }
 
-.temp{font-size:50px;font-weight:200;line-height:1}
+.temp{
+  font-size:36px;
+  font-weight:200;
+  line-height:1;
+}
 
-/* ===== ICONA ANIMATA ===== */
+/* ===== ICONA ANIMATA (stessa grafica, ridotta) ===== */
 .wx{
   position:relative;
   width:110px;
   height:95px;
   flex-shrink:0;
+  transform:scale(.72);
+  transform-origin:center;
 }
 
 .sun{
@@ -125,13 +132,8 @@ body{
   border-radius:50%;
 }
 
-@keyframes drift{
-  50%{transform:translateX(5px)}
-}
-
-@keyframes pulse{
-  50%{transform:scale(1.08)}
-}
+@keyframes drift{50%{transform:translateX(5px)}}
+@keyframes pulse{50%{transform:scale(1.08)}}
 
 .rain{
   position:absolute;
@@ -193,8 +195,18 @@ body{
   50%{opacity:1}
 }
 
-.info{text-align:right;font-size:12px;opacity:.9;line-height:1.5}
-.status{font-size:16px;font-weight:600;margin-bottom:2px}
+.info{
+  text-align:right;
+  font-size:11px;
+  opacity:.9;
+  line-height:1.4;
+}
+
+.status{
+  font-size:14px;
+  font-weight:600;
+  margin-bottom:2px;
+}
 
 .forecast{
   display:flex;
@@ -202,17 +214,17 @@ body{
   gap:4px;
   background:rgba(255,255,255,.06);
   border-top:1px solid rgba(255,255,255,.12);
-  padding:8px 6px;
+  padding:6px 4px;
 }
 
 .hour{text-align:center;flex:1}
-.hour-time{font-size:11px;opacity:.75}
-.hour-icon{font-size:20px;margin:3px 0}
-.hour-temp{font-size:12px;font-weight:700}
+.hour-time{font-size:10px;opacity:.75}
+.hour-icon{font-size:15px;margin:2px 0}
+.hour-temp{font-size:11px;font-weight:700}
 
 .loading{
   display:flex;align-items:center;justify-content:center;
-  height:100%;opacity:.7;font-size:14px;
+  height:100%;opacity:.7;font-size:13px;
 }
 </style>
 </head>
