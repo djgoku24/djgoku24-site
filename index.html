@@ -2535,40 +2535,43 @@ max-height: 32px;
     </div>
   </div>
 
-  <div class="weather-page-grid">
-
-  <!-- PALERMO -->
+    <!-- PALERMO -->
 <section class="weather-panel">
   <h2 class="weather-panel-title">PALERMO</h2>
-  <iframe
-    data-src="https://djgoku24-site.goku2424.workers.dev/weather-palermo.html"
-    title="Meteo Palermo"
-    style="display:block; width:100%; height:260px; border:0; background:transparent;">
-  </iframe>
+
+  <div id="ww_120db692309a5" v='1.3' loc='id' a='{"t":"horizontal","lang":"it","sl_lpl":1,"ids":["wl7981"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
+    Altre previsioni: <a href="https://oneweather.org/it/palermo/10_days/" id="ww_120db692309a5_u" target="_blank">Meteo 10 giorni Palermo</a>
+  </div>
+
+  <script async src="https://app3.weatherwidget.org/js/?id=ww_120db692309a5"></script>
 </section>
 
 <!-- ROMA -->
-<section class="weather-panel">
-  <h2 class="weather-panel-title">ROMA</h2>
-  <iframe
-    data-src="https://djgoku24-site.goku2424.workers.dev/weather-roma.html"
-    title="Meteo Roma"
-    style="display:block; width:100%; height:260px; border:0; background:transparent;">
-  </iframe>
+    <section class="weather-panel">
+      <h2 class="weather-panel-title">ROMA</h2>
+
+      <div id="ww_555ca156799b2" v='1.3' loc='id' a='{"t":"horizontal","lang":"it","sl_lpl":1,"ids":["wl2405"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
+    Altre previsioni:
+    <a href="https://oneweather.org/it/rome/10_days/" id="ww_555ca156799b2_u" target="_blank">
+      Meteo 10 giorni roma
+    </a>
+  </div>
+
+  <script async src="https://app3.weatherwidget.org/js/?id=ww_555ca156799b2"></script>
+
+ <!-- MILANO -->
+    <section class="weather-panel">
+      <h2 class="weather-panel-title">MILANO</h2>
+
+      <div id="ww_183256232329d" v='1.3' loc='id' a='{"t":"horizontal","lang":"it","sl_lpl":1,"ids":["wl3467"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
+    Altre previsioni: <a href="https://oneweather.org/it/rome/10_days/" id="ww_183256232329d_u" target="_blank">
+      Meteo 10 giorni roma</a></div><script async src="https://app3.weatherwidget.org/js/?id=ww_183256232329d"></script>
+    </section>
+
+  </div>
 </section>
 
-<!-- MILANO -->
-<section class="weather-panel">
-  <h2 class="weather-panel-title">MILANO</h2>
-  <iframe
-    data-src="https://djgoku24-site.goku2424.workers.dev/weather-milano.html"
-    title="Meteo Milano"
-    style="display:block; width:100%; height:260px; border:0; background:transparent;">
-  </iframe>
-</section>
-
-</div>
-</section>
+    </section>
 
       
 
@@ -2736,18 +2739,7 @@ max-height: 32px;
 <script src="renderer.js"></script>
 
 
-<script>
-  const weatherButton = document.querySelector('[data-page="weather"]');
-  const weatherFrames = document.querySelectorAll('#weatherPage iframe[data-src]');
-  let weatherLoaded = false;
 
-  weatherButton.addEventListener('click', () => {
-    if (weatherLoaded) return;
-    weatherFrames.forEach(frame => {
-      frame.src = frame.dataset.src;
-    });
-    weatherLoaded = true;
-  });
 </script>
 
 </body>
