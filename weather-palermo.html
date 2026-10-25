@@ -77,194 +77,32 @@ body.storm{
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:12px;
+  gap:16px;
 }
 
 .temp{
-  font-size:40px;
+  font-size:48px;
   font-weight:300;
   line-height:1;
   text-shadow:0 1px 4px rgba(0,0,0,.4);
 }
 
 .desc{
-  font-size:12px;
+  font-size:14px;
   line-height:1.4;
-  max-width:110px;
+  max-width:130px;
   text-shadow:0 1px 3px rgba(0,0,0,.4);
 }
 
-/* ===== ICONA GRANDE ANIMATA ===== */
-.wx{
-  position:relative;
+/* ===== ICONE METEOCON ===== */
+.wx-icon{
   width:70px;
-  height:60px;
-  flex-shrink:0;
+  height:70px;
 }
 
-.moon{
-  position:absolute;
-  top:2px;
-  right:16px;
-  width:30px;
-  height:30px;
-  border-radius:50%;
-  background:transparent;
-  box-shadow:inset -9px 4px 0 0 #ffd500;
-  filter:drop-shadow(0 0 8px rgba(255,213,0,.7));
-  z-index:1;
-}
-
-.sun{
-  position:absolute;
-  top:0;
-  right:14px;
+.hour-icon .wx-icon{
   width:34px;
   height:34px;
-  border-radius:50%;
-  background:#ffd500;
-  box-shadow:0 0 14px #ffd500,0 0 30px #ffd500;
-  animation:pulse 4s infinite;
-  z-index:1;
-}
-
-.cloud{
-  position:absolute;
-  bottom:10px;
-  left:4px;
-  width:52px;
-  height:22px;
-  background:#f4f7fb;
-  border-radius:100px;
-  animation:drift 6s ease-in-out infinite;
-  z-index:2;
-}
-
-.cloud::before{
-  content:'';
-  position:absolute;
-  width:28px;
-  height:28px;
-  left:7px;
-  top:-14px;
-  background:#f4f7fb;
-  border-radius:50%;
-}
-
-.cloud::after{
-  content:'';
-  position:absolute;
-  width:22px;
-  height:22px;
-  right:8px;
-  top:-10px;
-  background:#f4f7fb;
-  border-radius:50%;
-}
-
-@keyframes drift{50%{transform:translateX(4px)}}
-@keyframes pulse{50%{transform:scale(1.08)}}
-
-.rain{
-  position:absolute;
-  left:16px;
-  bottom:0;
-  z-index:3;
-}
-
-.rain span{
-  display:inline-block;
-  width:2px;height:10px;margin:2px;
-  background:#9fd8ff;border-radius:2px;
-  animation:rain .8s infinite linear;
-}
-
-.rain span:nth-child(2){animation-delay:.2s}
-.rain span:nth-child(3){animation-delay:.4s}
-
-@keyframes rain{
-  0%{opacity:0;transform:translateY(-4px)}
-  100%{opacity:1;transform:translateY(10px)}
-}
-
-.bolt{
-  position:absolute;
-  left:24px;
-  bottom:0;
-  width:0;height:0;
-  border-left:7px solid transparent;
-  border-right:7px solid transparent;
-  border-top:16px solid #ffd500;
-  filter:drop-shadow(0 0 8px #ffd500);
-  animation:flash 1.2s infinite;
-  z-index:4;
-}
-
-@keyframes flash{0%,100%{opacity:.2}50%{opacity:1}}
-
-/* ===== ICONA PICCOLA PER LE ORE ===== */
-.mi{
-  position:relative;
-  width:36px;
-  height:32px;
-  margin:0;
-  transform:scale(1.2);
-  transform-origin:center;
-  overflow:visible;
-}
-
-.mi .wx{
-  width:30px;
-  height:26px;
-}
-
-.mi .moon{
-  width:16px;
-  height:16px;
-  top:1px;
-  right:7px;
-  box-shadow:inset -5px 2px 0 0 #ffd500;
-  filter:drop-shadow(0 0 4px rgba(255,213,0,.7));
-}
-
-.mi .sun{
-  width:15px;
-  height:15px;
-  top:1px;
-  right:7px;
-  box-shadow:0 0 6px #ffd500;
-}
-
-.mi .cloud{
-  width:22px;
-  height:9px;
-  bottom:3px;
-  left:4px;
-}
-
-.mi .cloud::before{
-  width:12px;
-  height:12px;
-  left:3px;
-  top:-6px;
-}
-
-.mi .cloud::after{
-  width:9px;
-  height:9px;
-  right:3px;
-  top:-4px;
-}
-
-.mi .rain{
-  left:6px;
-  bottom:0;
-}
-
-.mi .rain span{
-  width:1.5px;
-  height:5px;
-  margin:1px;
 }
 
 /* PREVISIONI ORARIE */
@@ -338,6 +176,31 @@ body.storm{
 .arrow:hover{background:rgba(255,255,255,.32)}
 .arrow-left{left:3px}
 .arrow-right{right:3px}
+
+
+
+.stars{
+  position:absolute;
+  top:10px;
+  right:14px;
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:#fff;
+  opacity:.9;
+  box-shadow:
+    -14px 10px 0 -1px #fff,
+    6px 18px 0 -1px #fff;
+  z-index:1;
+  animation:twinkle 2.5s infinite;
+}
+
+@keyframes twinkle{
+  0%,100%{opacity:.9}
+  50%{opacity:.4}
+}
+
+
 </style>
 </head>
 <body>
@@ -385,32 +248,25 @@ function bgClass(code,isDay){
 
 function iconHTML(code,isDay){
   const k = kindOf(code);
-  const night = !isDay;
-  let html = "";
+  let icon = "cloudy";
 
   if(k==="clear"){
-    html = night ? `<div class="moon"></div>` : `<div class="sun"></div>`;
+    icon = isDay ? "clear-day" : "clear-night";
   }
   else if(k==="cloud"){
-    html = (night ? `<div class="moon"></div>` : `<div class="sun"></div>`) + `<div class="cloud"></div>`;
+    icon = isDay ? "partly-cloudy-day" : "partly-cloudy-night";
   }
   else if(k==="rain"){
-    html = (night ? `<div class="moon"></div>` : `<div class="sun"></div>`)
-         + `<div class="cloud"></div>
-            <div class="rain"><span></span><span></span><span></span></div>`;
+    icon = "rain";
+  }
+  else if(k==="snow"){
+    icon = "snow";
   }
   else if(k==="storm"){
-    html = `<div class="cloud"></div>
-            <div class="rain"><span></span><span></span><span></span></div>
-            <div class="bolt"></div>`;
+    icon = isDay ? "thunderstorms-day" : "thunderstorms-night";
   }
 
-  else if(k==="snow"){
-  html = (night ? `<div class="moon"></div>` : `<div class="sun"></div>`)
-       + `<div class="cloud"></div>`;
-}
-
-  return `<div class="wx">${html}</div>`;
+ return `<img class="wx-icon" src="https://cdn.meteocons.com/3.0.0-next.10/svg/fill/${icon}.svg" alt="">`;
 }
 
 function render(data){
@@ -434,12 +290,13 @@ for(let i=0;i<h.time.length && hours.length<24;i++){
   const d = new Date(h.time[i]);
 
   if(d >= start){
-    hours.push({
-      t:d.getHours().toString().padStart(2,"0")+":00",
-      c:h.weather_code[i],
-      temp:Math.round(h.temperature_2m[i])
-    });
-  }
+  hours.push({
+    t:d.getHours().toString().padStart(2,"0")+":00",
+    c:h.weather_code[i],
+    day:h.is_day[i],
+    temp:Math.round(h.temperature_2m[i])
+  });
+}
 }
   document.getElementById("card").innerHTML = `
     <div class="city">${CONFIG.city}</div>
@@ -456,7 +313,7 @@ for(let i=0;i<h.time.length && hours.length<24;i++){
     ${hours.map(h=>`
       <div class="hour">
         <div class="hour-time">${h.t}</div>
-        <div class="hour-icon"><div class="mi">${iconHTML(h.c,1)}</div></div>
+        <div class="hour-icon">${iconHTML(h.c, h.day)}</div>
         <div class="hour-temp">${h.temp}°</div>
       </div>`).join("")}
   </div>
@@ -470,7 +327,7 @@ async function load(){
     `https://api.open-meteo.com/v1/forecast` +
     `?latitude=${CONFIG.lat}&longitude=${CONFIG.lon}` +
     `&current=temperature_2m,weather_code,is_day` +
-    `&hourly=temperature_2m,weather_code` +
+    `&hourly=temperature_2m,weather_code,is_day` +
     `&forecast_days=2&timezone=auto`;
 
   try{
