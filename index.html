@@ -2262,7 +2262,7 @@ max-height: 32px;
 
     <main class="main">
 
-      <section id="radioPage">
+      <section id="radioPage" class="page active">
 
         <div class="hero">
           <img
@@ -2507,7 +2507,7 @@ max-height: 32px;
   </p>
 </section>
 
-<section id="weatherPage" class="page active simple-page">
+<section id="weatherPage" class="page simple-page">
   <div class="section-heading">
     <div>
       <span class="eyebrow">DJ GOKU 24</span>
@@ -2518,46 +2518,33 @@ max-height: 32px;
 
   <div class="weather-page-grid">
 
-   <!-- PALERMO -->
-<section class="weather-panel">
-  <h2 class="weather-panel-title">PALERMO</h2>
-
-  <div class="weather-widget-wrap">
-    <div id="ww50bc6b5ecde95" v='1.3' loc='id' a='{"t":"horizontal","lang":"it","sl_lpl":1,"ids":["wl7981"],"font":"Times","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
-      Altre previsioni:
-      <a href="https://oneweather.org/palermo/30days/" id="ww50bc6b5ecde95u" target="_blank" rel="noopener noreferrer">
-        Meteo 30 giorni Palermo
-      </a>
+  <section id="weatherPage" class="page simple-page">
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">DJ GOKU 24</span>
+      <h1>Meteo</h1>
+      <p>Previsioni meteo di Palermo, Roma e Milano.</p>
     </div>
   </div>
-</section>
+
+  <div class="weather-page-grid">
+
+    <!-- PALERMO -->
+    <section class="weather-panel">
+      <h2 class="weather-panel-title">PALERMO</h2>
+      <iframe class="weather-frame" src="weather-palermo.html" title="Meteo Palermo"></iframe>
+    </section>
 
     <!-- ROMA -->
     <section class="weather-panel">
       <h2 class="weather-panel-title">ROMA</h2>
-
-      <div class="weather-widget-wrap">
-        <div id="ww_555ca156799b2" v='1.3' loc='id' a='{"t":"horizontal","lang":"it","sl_lpl":1,"ids":["wl2405"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
-          Altre previsioni:
-          <a href="https://oneweather.org/it/rome/10_days/" id="ww_555ca156799b2_u" target="_blank">
-            Meteo 10 giorni roma
-          </a>
-        </div>
-      </div>
+      <iframe class="weather-frame" src="weather-roma.html" title="Meteo Roma"></iframe>
     </section>
 
     <!-- MILANO -->
     <section class="weather-panel">
       <h2 class="weather-panel-title">MILANO</h2>
-
-      <div class="weather-widget-wrap">
-        <div id="ww_443bc69e7bbfe" v='1.3' loc='id' a='{"t":"horizontal","lang":"it","sl_lpl":1,"ids":["wl3467"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
-          Altre previsioni:
-          <a href="https://oneweather.org/it/milan/10_days/" id="ww_443bc69e7bbfe_u" target="_blank">
-            Meteo 10 giorni milano
-          </a>
-        </div>
-      </div>
+      <iframe class="weather-frame" src="weather-milano.html" title="Meteo Milano"></iframe>
     </section>
 
   </div>
@@ -2677,14 +2664,7 @@ max-height: 32px;
     crossorigin="anonymous"
   ></audio>
 
-<!-- PALERMO -->
-<script async src="https://app3.weatherwidget.org/js/?id=ww50bc6b5ecde95"></script>
 
-<!-- ROMA -->
-<script async src="https://app3.weatherwidget.org/js/?id=ww_555ca156799b2"></script>
-
-<!-- MILANO -->
-<script async src="https://app3.weatherwidget.org/js/?id=ww_443bc69e7bbfe"></script>
 
 <script>
   const onAirCovers = document.querySelectorAll(".on-air-cover");
