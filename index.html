@@ -1917,6 +1917,22 @@
   background: transparent !important;
 }
 
+#weatherPage {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+#weatherPage .section-heading {
+  grid-column: 1 / -1;
+}
+
+#weatherPage .weather-panel {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
 
 
 /* PAGINA CHAT */
