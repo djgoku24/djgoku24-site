@@ -12,155 +12,170 @@ body{
   width:100%;
   height:100vh;
   overflow:hidden;
-  background:linear-gradient(160deg,#0a1f3d,#0b1030);
   color:#fff;
+  transition:background 1s ease;
+  background-size:cover;
+  background-position:center;
+}
+
+/* SFONDI DINAMICI */
+body.day-clear{
+  background-image:url("https://app3.weatherwidget.org/skin/img/bg/clear_day.jpg");
+}
+
+body.night-clear{
+  background-image:url("https://app3.weatherwidget.org/skin/img/bg/clear_night.jpg");
+}
+
+body.cloudy{
+  background-image:url("https://app3.weatherwidget.org/skin/img/bg/cloudy_day.jpg");
+}
+
+body.night-cloudy{
+  background-image:url("https://app3.weatherwidget.org/skin/img/bg/clear_night.jpg");
+}
+
+body.rain{
+  background-image:url("https://app3.weatherwidget.org/skin/img/bg/rainy_day.jpg");
+}
+
+body.night-rain{
+  background-image:url("https://app3.weatherwidget.org/skin/img/bg/rainy_night.jpg");
+}
+
+body.day-snow{
+  background-image:url("https://app3.weatherwidget.org/skin/img/bg/cloudy_day_snow.jpg");
+}
+
+body.night-snow{
+  background-image:url("https://app3.weatherwidget.org/skin/img/bg/cloudy_night_snow.jpg");
+}
+
+body.storm{
+  background-image:url("https://.../storm.jpg");
 }
 
 .card{
   height:100%;
-  padding:10px 12px;
+  padding:10px 12px 8px;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
+  background:rgba(0,0,0,.18);
 }
 
-/* RIGA 1: città + orologio */
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+/* CITTÀ CENTRATA */
+.city{
+  text-align:center;
+  font-size:15px;
+  font-weight:700;
+  text-shadow:0 1px 4px rgba(0,0,0,.4);
 }
 
-.city{font-size:14px;font-weight:700}
-
-.clock{
-  font-size:11px;
-  opacity:.85;
-  background:rgba(255,255,255,.08);
-  padding:2px 8px;
-  border-radius:8px;
-}
-
-/* RIGA 2: icona + temperatura + condizioni */
+/* TEMPERATURA + ICONA + DESCRIZIONE */
 .main{
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  gap:8px;
-}
-
-.left{
-  display:flex;
-  align-items:center;
-  gap:10px;
+  justify-content:center;
+  gap:12px;
 }
 
 .temp{
-  font-size:34px;
+  font-size:40px;
   font-weight:300;
   line-height:1;
+  text-shadow:0 1px 4px rgba(0,0,0,.4);
 }
 
-.cond{
-  text-align:right;
-  font-size:11px;
-  line-height:1.5;
-  opacity:.9;
+.desc{
+  font-size:12px;
+  line-height:1.4;
+  max-width:110px;
+  text-shadow:0 1px 3px rgba(0,0,0,.4);
 }
 
-.cond b{
-  display:block;
-  font-size:13px;
-  opacity:1;
-}
-
-/* ===== ICONA ANIMATA COMPATTA ===== */
+/* ===== ICONA GRANDE ANIMATA ===== */
 .wx{
   position:relative;
-  width:64px;
-  height:56px;
+  width:70px;
+  height:60px;
   flex-shrink:0;
-  transform:scale(.55);
-  transform-origin:left center;
-  margin:-14px 0;
-}
-
-.sun{
-  position:absolute;
-  top:6px;
-  right:22px;
-  width:44px;
-  height:44px;
-  border-radius:50%;
-  background:#ffd500;
-  box-shadow:0 0 18px #ffd500,0 0 42px #ffd500;
-  animation:pulse 4s infinite;
 }
 
 .moon{
   position:absolute;
-  top:6px;
-  right:26px;
-  width:42px;
-  height:42px;
+  top:2px;
+  right:16px;
+  width:30px;
+  height:30px;
   border-radius:50%;
-  background:#e8eefc;
-  box-shadow:0 0 18px rgba(200,220,255,.8);
+  background:transparent;
+  box-shadow:inset -9px 4px 0 0 #ffd500;
+  filter:drop-shadow(0 0 8px rgba(255,213,0,.7));
+  z-index:1;
 }
 
-.moon::after{
-  content:'';
+.sun{
   position:absolute;
+  top:0;
+  right:14px;
   width:34px;
   height:34px;
   border-radius:50%;
-  background:#0b1030;
-  top:-7px;
-  left:-9px;
+  background:#ffd500;
+  box-shadow:0 0 14px #ffd500,0 0 30px #ffd500;
+  animation:pulse 4s infinite;
+  z-index:1;
 }
 
 .cloud{
   position:absolute;
-  bottom:16px;
-  left:8px;
-  width:78px;
-  height:32px;
-  background:#fff;
+  bottom:10px;
+  left:4px;
+  width:52px;
+  height:22px;
+  background:#f4f7fb;
   border-radius:100px;
   animation:drift 6s ease-in-out infinite;
+  z-index:2;
 }
 
 .cloud::before{
   content:'';
   position:absolute;
-  width:44px;
-  height:44px;
-  left:10px;
-  top:-22px;
-  background:#fff;
+  width:28px;
+  height:28px;
+  left:7px;
+  top:-14px;
+  background:#f4f7fb;
   border-radius:50%;
 }
 
 .cloud::after{
   content:'';
   position:absolute;
-  width:34px;
-  height:34px;
-  right:12px;
-  top:-16px;
-  background:#fff;
+  width:22px;
+  height:22px;
+  right:8px;
+  top:-10px;
+  background:#f4f7fb;
   border-radius:50%;
 }
 
-@keyframes drift{50%{transform:translateX(5px)}}
+@keyframes drift{50%{transform:translateX(4px)}}
 @keyframes pulse{50%{transform:scale(1.08)}}
 
-.rain{position:absolute;left:26px;bottom:0}
+.rain{
+  position:absolute;
+  left:16px;
+  bottom:0;
+  z-index:3;
+}
 
 .rain span{
   display:inline-block;
-  width:3px;height:14px;margin:2px;
-  background:#7dd3fc;border-radius:2px;
+  width:2px;height:10px;margin:2px;
+  background:#9fd8ff;border-radius:2px;
   animation:rain .8s infinite linear;
 }
 
@@ -168,40 +183,118 @@ body{
 .rain span:nth-child(3){animation-delay:.4s}
 
 @keyframes rain{
-  0%{opacity:0;transform:translateY(-6px)}
-  100%{opacity:1;transform:translateY(12px)}
+  0%{opacity:0;transform:translateY(-4px)}
+  100%{opacity:1;transform:translateY(10px)}
 }
 
 .bolt{
-  position:absolute;left:38px;bottom:2px;
+  position:absolute;
+  left:24px;
+  bottom:0;
   width:0;height:0;
-  border-left:8px solid transparent;
-  border-right:8px solid transparent;
-  border-top:18px solid #ffd500;
+  border-left:7px solid transparent;
+  border-right:7px solid transparent;
+  border-top:16px solid #ffd500;
   filter:drop-shadow(0 0 8px #ffd500);
   animation:flash 1.2s infinite;
+  z-index:4;
 }
 
 @keyframes flash{0%,100%{opacity:.2}50%{opacity:1}}
 
-/* RIGA 3: previsioni compatte */
+/* ===== ICONA PICCOLA PER LE ORE ===== */
+.mi{
+  position:relative;
+  width:30px;
+  height:26px;
+  margin:0 auto;
+  overflow:hidden;
+}
+
+.mi .wx{
+  width:30px;
+  height:26px;
+}
+
+.mi .moon{
+  width:16px;
+  height:16px;
+  top:1px;
+  right:7px;
+  box-shadow:inset -5px 2px 0 0 #ffd500;
+  filter:drop-shadow(0 0 4px rgba(255,213,0,.7));
+}
+
+.mi .sun{
+  width:15px;
+  height:15px;
+  top:1px;
+  right:7px;
+  box-shadow:0 0 6px #ffd500;
+}
+
+.mi .cloud{
+  width:22px;
+  height:9px;
+  bottom:3px;
+  left:4px;
+}
+
+.mi .cloud::before{
+  width:12px;
+  height:12px;
+  left:3px;
+  top:-6px;
+}
+
+.mi .cloud::after{
+  width:9px;
+  height:9px;
+  right:3px;
+  top:-4px;
+}
+
+.mi .rain{
+  left:6px;
+  bottom:0;
+}
+
+.mi .rain span{
+  width:1.5px;
+  height:5px;
+  margin:1px;
+}
+
+/* PREVISIONI ORARIE */
 .forecast{
   display:flex;
   justify-content:space-between;
   gap:4px;
-  background:rgba(255,255,255,.06);
+  background:rgba(0,0,0,.25);
   border-radius:10px;
   padding:6px 8px;
 }
 
-.hour{text-align:center;flex:1}
-.hour-time{font-size:10px;opacity:.7}
-.hour-icon{font-size:14px;margin:1px 0}
+.hour{
+  text-align:center;
+  flex:1;
+  min-width:0;
+}
+
+.hour-time{font-size:10px;opacity:.8}
+
+.hour-icon{
+  height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
 .hour-temp{font-size:11px;font-weight:700}
 
 .loading{
   display:flex;align-items:center;justify-content:center;
-  height:100%;opacity:.7;font-size:13px;
+  height:100%;opacity:.8;font-size:13px;
 }
 </style>
 </head>
@@ -221,38 +314,70 @@ const CONFIG = {
 /* ============================================== */
 
 const LABELS = {
-  0:"Sereno",1:"Poco nuvoloso",2:"Nuvoloso",3:"Molto nuvoloso",
-  45:"Nebbia",48:"Nebbia",51:"Pioviggine",53:"Pioviggine",55:"Pioviggine",
+  0:"Sereno",1:"Poco nuvoloso",2:"Parzialmente nuvoloso",3:"Molto nuvoloso",
+  45:"Nebbia",48:"Nebbia",
+  51:"Pioviggine",53:"Pioviggine",55:"Pioviggine",
   61:"Pioggia debole",63:"Pioggia",65:"Pioggia forte",
   71:"Neve",73:"Neve",75:"Neve forte",
-  80:"Rovesci",81:"Rovesci",82:"Rovesci forti",
-  95:"Temporale",96:"Temporale",99:"Temporale"
+  80:"Rovesci deboli",81:"Rovesci",82:"Rovesci forti",
+  95:"Temporale",96:"Temporale",99:"Temporale forte"
 };
 
 function kindOf(code){
   if(code===0||code===1) return "clear";
   if(code===2||code===3||code===45||code===48) return "cloud";
-  if(code>=51&&code<=67) return "rain";
+  if((code>=51&&code<=67)||(code>=80&&code<=82)) return "rain";
   if(code>=71&&code<=77) return "snow";
-  if(code>=80&&code<=82) return "rain";
   if(code>=95) return "storm";
   return "cloud";
 }
 
+function bgClass(code,isDay){
+  const k = kindOf(code);
+  if(k==="storm") return "storm";
+  if(k==="snow") return isDay ? "day-snow" : "night-snow";
+  if(k==="rain") return isDay ? "rain" : "night-rain";
+  if(k==="cloud") return isDay ? "cloudy" : "night-cloudy";
+  return isDay ? "day-clear" : "night-clear";
+}
+
 function iconHTML(code,isDay){
   const k = kindOf(code);
-  if(k==="clear") return isDay ? `<div class="sun"></div>` : `<div class="moon"></div>`;
-  if(k==="cloud") return (isDay?`<div class="sun"></div>`:`<div class="moon"></div>`)+`<div class="cloud"></div>`;
-  if(k==="rain") return `<div class="cloud"></div><div class="rain"><span></span><span></span><span></span></div>`;
-  if(k==="snow") return `<div class="cloud"></div>`;
-  if(k==="storm") return `<div class="cloud"></div><div class="rain"><span></span><span></span></div><div class="bolt"></div>`;
-  return `<div class="cloud"></div>`;
+  const night = !isDay;
+  let html = "";
+
+  if(k==="clear"){
+    html = night ? `<div class="moon"></div>` : `<div class="sun"></div>`;
+  }
+  else if(k==="cloud"){
+    html = (night ? `<div class="moon"></div>` : `<div class="sun"></div>`) + `<div class="cloud"></div>`;
+  }
+  else if(k==="rain"){
+    html = (night ? `<div class="moon"></div>` : `<div class="sun"></div>`)
+         + `<div class="cloud"></div>
+            <div class="rain"><span></span><span></span><span></span></div>`;
+  }
+  else if(k==="storm"){
+    html = `<div class="cloud"></div>
+            <div class="rain"><span></span><span></span><span></span></div>
+            <div class="bolt"></div>`;
+  }
+
+  else if(k==="snow"){
+  html = (night ? `<div class="moon"></div>` : `<div class="sun"></div>`)
+       + `<div class="cloud"></div>`;
+}
+
+  return `<div class="wx">${html}</div>`;
 }
 
 function render(data){
   const c = data.current;
   const h = data.hourly;
+  const isDay = c.is_day === 1;
   const nowHour = new Date(c.time).getHours();
+
+  document.body.className = bgClass(c.weather_code, isDay);
 
   const hours = [];
   for(let i=0;i<h.time.length && hours.length<5;i++){
@@ -267,46 +392,30 @@ function render(data){
   }
 
   document.getElementById("card").innerHTML = `
-    <div class="top">
-      <div class="city">${CONFIG.city}</div>
-      <div class="clock" id="clock"></div>
-    </div>
+    <div class="city">${CONFIG.city}</div>
 
     <div class="main">
-      <div class="left">
-        <div class="wx">${iconHTML(c.weather_code, c.is_day===1)}</div>
-        <div class="temp">${Math.round(c.temperature_2m)}°</div>
-      </div>
-      <div class="cond">
-        <b>${LABELS[c.weather_code] || "Meteo"}</b>
-        💨 ${c.wind_speed_10m} km/h<br>
-        💧 ${c.relative_humidity_2m}%
-      </div>
+      <div class="temp">${Math.round(c.temperature_2m)}°</div>
+      ${iconHTML(c.weather_code, isDay)}
+      <div class="desc">${LABELS[c.weather_code] || "Meteo"}</div>
     </div>
 
     <div class="forecast">
       ${hours.map(h=>`
         <div class="hour">
           <div class="hour-time">${h.t}</div>
-          <div class="hour-icon">${iconHTML(h.c,1)}</div>
+          <div class="hour-icon"><div class="mi">${iconHTML(h.c,1)}</div></div>
           <div class="hour-temp">${h.temp}°</div>
         </div>`).join("")}
     </div>
   `;
-
-  function tick(){
-    document.getElementById("clock").textContent =
-      new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"});
-  }
-  tick();
-  setInterval(tick,1000);
 }
 
 async function load(){
   const url =
     `https://api.open-meteo.com/v1/forecast` +
     `?latitude=${CONFIG.lat}&longitude=${CONFIG.lon}` +
-    `&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m,is_day` +
+    `&current=temperature_2m,weather_code,is_day` +
     `&hourly=temperature_2m,weather_code` +
     `&forecast_days=1&timezone=auto`;
 
