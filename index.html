@@ -2538,34 +2538,34 @@ max-height: 32px;
   <div class="weather-page-grid">
 
   <!-- PALERMO -->
-  <section class="weather-panel">
-    <h2 class="weather-panel-title">PALERMO</h2>
-    <iframe
-      src="https://djgoku24-site.goku2424.workers.dev/weather-palermo.html"
-      title="Meteo Palermo"
-      style="display:block; width:100%; height:260px; border:0; background:transparent;">
-    </iframe>
-  </section>
+<section class="weather-panel">
+  <h2 class="weather-panel-title">PALERMO</h2>
+  <iframe
+    data-src="https://djgoku24-site.goku2424.workers.dev/weather-palermo.html"
+    title="Meteo Palermo"
+    style="display:block; width:100%; height:260px; border:0; background:transparent;">
+  </iframe>
+</section>
 
-  <!-- ROMA -->
-  <section class="weather-panel">
-    <h2 class="weather-panel-title">ROMA</h2>
-    <iframe
-      src="https://djgoku24-site.goku2424.workers.dev/weather-roma.html"
-      title="Meteo Roma"
-      style="display:block; width:100%; height:260px; border:0; background:transparent;">
-    </iframe>
-  </section>
+<!-- ROMA -->
+<section class="weather-panel">
+  <h2 class="weather-panel-title">ROMA</h2>
+  <iframe
+    data-src="https://djgoku24-site.goku2424.workers.dev/weather-roma.html"
+    title="Meteo Roma"
+    style="display:block; width:100%; height:260px; border:0; background:transparent;">
+  </iframe>
+</section>
 
-  <!-- MILANO -->
-  <section class="weather-panel">
-    <h2 class="weather-panel-title">MILANO</h2>
-    <iframe
-      src="https://djgoku24-site.goku2424.workers.dev/weather-milano.html"
-      title="Meteo Milano"
-      style="display:block; width:100%; height:260px; border:0; background:transparent;">
-    </iframe>
-  </section>
+<!-- MILANO -->
+<section class="weather-panel">
+  <h2 class="weather-panel-title">MILANO</h2>
+  <iframe
+    data-src="https://djgoku24-site.goku2424.workers.dev/weather-milano.html"
+    title="Meteo Milano"
+    style="display:block; width:100%; height:260px; border:0; background:transparent;">
+  </iframe>
+</section>
 
 </div>
 </section>
@@ -2734,5 +2734,21 @@ max-height: 32px;
 </script>
 
 <script src="renderer.js"></script>
+
+
+<script>
+  const weatherButton = document.querySelector('[data-page="weather"]');
+  const weatherFrames = document.querySelectorAll('#weatherPage iframe[data-src]');
+  let weatherLoaded = false;
+
+  weatherButton.addEventListener('click', () => {
+    if (weatherLoaded) return;
+    weatherFrames.forEach(frame => {
+      frame.src = frame.dataset.src;
+    });
+    weatherLoaded = true;
+  });
+</script>
+
 </body>
 </html>
