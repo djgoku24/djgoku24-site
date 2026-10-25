@@ -205,10 +205,12 @@ body.storm{
 /* ===== ICONA PICCOLA PER LE ORE ===== */
 .mi{
   position:relative;
-  width:30px;
-  height:26px;
+  width:36px;
+  height:32px;
   margin:0;
-  overflow:hidden;
+  transform:scale(1.2);
+  transform-origin:center;
+  overflow:visible;
 }
 
 .mi .wx{
@@ -292,17 +294,23 @@ body.storm{
   padding:2px 0;
 }
 
-.hour-time{font-size:10px;opacity:.8}
+.hour-time{
+  font-size:11px;
+  opacity:.85;
+}
 
 .hour-icon{
-  height:32px;
-  margin:3px 0;
+  height:38px;
+  margin:4px 0;
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
-.hour-temp{font-size:11px;font-weight:700}
+.hour-temp{
+  font-size:13px;
+  font-weight:700;
+}
 
 .loading{
   display:flex;align-items:center;justify-content:center;
