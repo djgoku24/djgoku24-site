@@ -85,40 +85,47 @@ body{
 
 .header{
     text-align:center;
-    padding-top:18px;
+    padding-top:15px;
 }
 
 .city{
-    font-size:clamp(20px, 5vw, 30px);
+    font-size:28px;
+    font-weight:700;
 }
+
 .date{
-    opacity:.8;
     margin-top:5px;
+    font-size:13px;
+    opacity:.8;
 }
 
 /* MAIN */
 
 .main{
     display:flex;
-   flex-wrap:wrap;
-justify-content:center;
+    justify-content:space-between;
     align-items:center;
-    padding:18px 20px;
-    gap:10px;
+
+    padding:35px 50px;
+
+    min-height:240px;
+    gap:35px;
 }
 
 .temp{
-    font-size:clamp(48px, 14vw, 90px);
-    font-weight:200;
-    text-shadow:0 0 20px rgba(255,255,255,.3);
+    font-size:80px;
+    font-weight:300;
+    min-width:180px;
 }
 
 /* ICONA METEO */
 
 .weather-icon{
     position:relative;
-    width:clamp(90px, 24vw, 160px);
-    height:clamp(80px, 20vw, 130px);
+
+    width:140px;
+    height:120px;
+
     flex-shrink:0;
 }
 
@@ -213,7 +220,8 @@ justify-content:center;
 /* CONDIZIONI */
 
 .conditions{
-    text-align:center;
+    flex:1;
+    text-align:left;
 }
 
 .status{
@@ -222,11 +230,16 @@ justify-content:center;
 
 .stats{
     display:flex;
-    gap:14px;
-    font-size:clamp(12px, 3vw, 18px);
-    flex-wrap:wrap;
-    justify-content:center;
+    gap:25px;
+
+    margin-top:15px;
+
+    font-size:15px;
+
+    flex-wrap:nowrap;
+    align-items:center;
 }
+
 
 /* FORECAST */
 
@@ -391,14 +404,7 @@ function updateClock(){
 updateClock();
 setInterval(updateClock,1000);
 
-function fitCard(){
-    const card = document.querySelector('.weather');
-    const scale = window.innerWidth / 950;
-    card.style.transform = 'scale(' + scale + ')';
-}
 
-fitCard();
-window.addEventListener('resize', fitCard);
 
 
 </script>
