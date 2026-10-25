@@ -1897,8 +1897,8 @@
 
 .weather-page-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 28px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
   width: 100%;
   min-width: 0;
 }
@@ -1917,20 +1917,7 @@
   background: transparent !important;
 }
 
-@media (min-width: 1100px) {
-  .weather-page-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px;
-    align-items: start;
-  }
-}
 
-@media (max-width: 1099px) {
-  .weather-page-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 28px;
-  }
-}
 
 /* PAGINA CHAT */
 #chatPage {
