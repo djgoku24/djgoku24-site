@@ -12,57 +12,77 @@ body{
   width:100%;
   height:100vh;
   overflow:hidden;
-  background:linear-gradient(160deg,#071a33,#0b1030 60%,#05070f);
+  background:linear-gradient(160deg,#0a1f3d,#0b1030);
   color:#fff;
 }
 
 .card{
   height:100%;
-  padding:10px 12px 8px;
+  padding:10px 12px;
   display:flex;
   flex-direction:column;
-  gap:6px;
+  justify-content:space-between;
 }
 
+/* RIGA 1: città + orologio */
 .top{
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
 
-.city{font-size:15px;font-weight:700}
+.city{font-size:14px;font-weight:700}
 
 .clock{
-  font-size:12px;
+  font-size:11px;
   opacity:.85;
   background:rgba(255,255,255,.08);
-  padding:3px 8px;
+  padding:2px 8px;
   border-radius:8px;
 }
 
-.middle{
-  flex:1;
-  min-height:0;
+/* RIGA 2: icona + temperatura + condizioni */
+.main{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:6px;
+  gap:8px;
+}
+
+.left{
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
 .temp{
-  font-size:36px;
-  font-weight:200;
+  font-size:34px;
+  font-weight:300;
   line-height:1;
 }
 
-/* ===== ICONA ANIMATA (stessa grafica, ridotta) ===== */
+.cond{
+  text-align:right;
+  font-size:11px;
+  line-height:1.5;
+  opacity:.9;
+}
+
+.cond b{
+  display:block;
+  font-size:13px;
+  opacity:1;
+}
+
+/* ===== ICONA ANIMATA COMPATTA ===== */
 .wx{
   position:relative;
-  width:110px;
-  height:95px;
+  width:64px;
+  height:56px;
   flex-shrink:0;
-  transform:scale(.72);
-  transform-origin:center;
+  transform:scale(.55);
+  transform-origin:left center;
+  margin:-14px 0;
 }
 
 .sun{
@@ -135,19 +155,12 @@ body{
 @keyframes drift{50%{transform:translateX(5px)}}
 @keyframes pulse{50%{transform:scale(1.08)}}
 
-.rain{
-  position:absolute;
-  left:26px;
-  bottom:0;
-}
+.rain{position:absolute;left:26px;bottom:0}
 
 .rain span{
   display:inline-block;
-  width:3px;
-  height:16px;
-  margin:3px;
-  background:#7dd3fc;
-  border-radius:2px;
+  width:3px;height:14px;margin:2px;
+  background:#7dd3fc;border-radius:2px;
   animation:rain .8s infinite linear;
 }
 
@@ -156,70 +169,34 @@ body{
 
 @keyframes rain{
   0%{opacity:0;transform:translateY(-6px)}
-  100%{opacity:1;transform:translateY(14px)}
-}
-
-.snow span{
-  display:inline-block;
-  width:5px;
-  height:5px;
-  margin:4px;
-  background:#fff;
-  border-radius:50%;
-  animation:snow 2s infinite linear;
-}
-
-.snow span:nth-child(2){animation-delay:.5s}
-.snow span:nth-child(3){animation-delay:1s}
-
-@keyframes snow{
-  0%{opacity:0;transform:translateY(-8px)}
-  100%{opacity:1;transform:translateY(16px)}
+  100%{opacity:1;transform:translateY(12px)}
 }
 
 .bolt{
-  position:absolute;
-  left:38px;
-  bottom:2px;
-  width:0;
-  height:0;
-  border-left:9px solid transparent;
-  border-right:9px solid transparent;
-  border-top:22px solid #ffd500;
-  filter:drop-shadow(0 0 10px #ffd500);
+  position:absolute;left:38px;bottom:2px;
+  width:0;height:0;
+  border-left:8px solid transparent;
+  border-right:8px solid transparent;
+  border-top:18px solid #ffd500;
+  filter:drop-shadow(0 0 8px #ffd500);
   animation:flash 1.2s infinite;
 }
 
-@keyframes flash{
-  0%,100%{opacity:.2}
-  50%{opacity:1}
-}
+@keyframes flash{0%,100%{opacity:.2}50%{opacity:1}}
 
-.info{
-  text-align:right;
-  font-size:11px;
-  opacity:.9;
-  line-height:1.4;
-}
-
-.status{
-  font-size:14px;
-  font-weight:600;
-  margin-bottom:2px;
-}
-
+/* RIGA 3: previsioni compatte */
 .forecast{
   display:flex;
   justify-content:space-between;
   gap:4px;
   background:rgba(255,255,255,.06);
-  border-top:1px solid rgba(255,255,255,.12);
-  padding:6px 4px;
+  border-radius:10px;
+  padding:6px 8px;
 }
 
 .hour{text-align:center;flex:1}
-.hour-time{font-size:10px;opacity:.75}
-.hour-icon{font-size:15px;margin:2px 0}
+.hour-time{font-size:10px;opacity:.7}
+.hour-icon{font-size:14px;margin:1px 0}
 .hour-temp{font-size:11px;font-weight:700}
 
 .loading{
@@ -238,19 +215,18 @@ body{
 /* ===== CAMBIA SOLO QUESTO PER OGNI CITTÀ ===== */
 const CONFIG = {
   city:"Palermo",
-  region:"Sicilia",
   lat:38.1157,
   lon:13.3615
 };
 /* ============================================== */
 
 const LABELS = {
-  0:"Sereno",1:"Poco nuvoloso",2:"Parzialmente nuvoloso",3:"Molto nuvoloso",
+  0:"Sereno",1:"Poco nuvoloso",2:"Nuvoloso",3:"Molto nuvoloso",
   45:"Nebbia",48:"Nebbia",51:"Pioviggine",53:"Pioviggine",55:"Pioviggine",
   61:"Pioggia debole",63:"Pioggia",65:"Pioggia forte",
-  71:"Neve debole",73:"Neve",75:"Neve forte",
-  80:"Rovesci deboli",81:"Rovesci",82:"Rovesci forti",
-  95:"Temporale",96:"Temporale",99:"Temporale forte"
+  71:"Neve",73:"Neve",75:"Neve forte",
+  80:"Rovesci",81:"Rovesci",82:"Rovesci forti",
+  95:"Temporale",96:"Temporale",99:"Temporale"
 };
 
 function kindOf(code){
@@ -264,30 +240,13 @@ function kindOf(code){
 }
 
 function iconHTML(code,isDay){
-  const kind = kindOf(code);
-  let html = "";
-
-  if(kind==="clear"){
-    html = isDay ? `<div class="sun"></div>` : `<div class="moon"></div>`;
-  }
-  else if(kind==="cloud"){
-    html = (isDay ? `<div class="sun"></div>` : `<div class="moon"></div>`) + `<div class="cloud"></div>`;
-  }
-  else if(kind==="rain"){
-    html = `<div class="cloud"></div>
-            <div class="rain"><span></span><span></span><span></span></div>`;
-  }
-  else if(kind==="snow"){
-    html = `<div class="cloud"></div>
-            <div class="rain snow"><span></span><span></span><span></span></div>`;
-  }
-  else if(kind==="storm"){
-    html = `<div class="cloud"></div>
-            <div class="rain"><span></span><span></span><span></span></div>
-            <div class="bolt"></div>`;
-  }
-
-  return `<div class="wx">${html}</div>`;
+  const k = kindOf(code);
+  if(k==="clear") return isDay ? `<div class="sun"></div>` : `<div class="moon"></div>`;
+  if(k==="cloud") return (isDay?`<div class="sun"></div>`:`<div class="moon"></div>`)+`<div class="cloud"></div>`;
+  if(k==="rain") return `<div class="cloud"></div><div class="rain"><span></span><span></span><span></span></div>`;
+  if(k==="snow") return `<div class="cloud"></div>`;
+  if(k==="storm") return `<div class="cloud"></div><div class="rain"><span></span><span></span></div><div class="bolt"></div>`;
+  return `<div class="cloud"></div>`;
 }
 
 function render(data){
@@ -300,8 +259,8 @@ function render(data){
     const d = new Date(h.time[i]);
     if(d.getHours() >= nowHour){
       hours.push({
-        time:d.getHours().toString().padStart(2,"0")+":00",
-        code:h.weather_code[i],
+        t:d.getHours().toString().padStart(2,"0")+":00",
+        c:h.weather_code[i],
         temp:Math.round(h.temperature_2m[i])
       });
     }
@@ -309,25 +268,27 @@ function render(data){
 
   document.getElementById("card").innerHTML = `
     <div class="top">
-      <div class="city">${CONFIG.city}, ${CONFIG.region}</div>
+      <div class="city">${CONFIG.city}</div>
       <div class="clock" id="clock"></div>
     </div>
 
-    <div class="middle">
-      <div class="temp">${Math.round(c.temperature_2m)}°C</div>
-      ${iconHTML(c.weather_code, c.is_day===1)}
-      <div class="info">
-        <div class="status">${LABELS[c.weather_code] || "Meteo"}</div>
-        <div>💨 ${c.wind_speed_10m} km/h</div>
-        <div>💧 ${c.relative_humidity_2m}%</div>
+    <div class="main">
+      <div class="left">
+        <div class="wx">${iconHTML(c.weather_code, c.is_day===1)}</div>
+        <div class="temp">${Math.round(c.temperature_2m)}°</div>
+      </div>
+      <div class="cond">
+        <b>${LABELS[c.weather_code] || "Meteo"}</b>
+        💨 ${c.wind_speed_10m} km/h<br>
+        💧 ${c.relative_humidity_2m}%
       </div>
     </div>
 
     <div class="forecast">
-      ${hours.map(h => `
+      ${hours.map(h=>`
         <div class="hour">
-          <div class="hour-time">${h.time}</div>
-          <div class="hour-icon">${iconHTML(h.code,1)}</div>
+          <div class="hour-time">${h.t}</div>
+          <div class="hour-icon">${iconHTML(h.c,1)}</div>
           <div class="hour-temp">${h.temp}°</div>
         </div>`).join("")}
     </div>
