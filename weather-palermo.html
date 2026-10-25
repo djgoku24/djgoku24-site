@@ -52,8 +52,10 @@ body{
 /* CARD */
 
 .weather{
-    width:950px;
+    width:100%;
+    max-width:950px;
     height:540px;
+
     position:relative;
     overflow:hidden;
     flex-shrink:0;
@@ -103,13 +105,10 @@ body{
 
 .main{
     display:flex;
-    justify-content:space-between;
+    justify-content:center;
     align-items:center;
-
-    padding:35px 50px;
-
-    min-height:240px;
-    gap:35px;
+    gap:30px;
+    padding:20px;
 }
 
 .temp{
@@ -121,11 +120,8 @@ body{
 /* ICONA METEO */
 
 .weather-icon{
-    position:relative;
-
-    width:140px;
-    height:120px;
-
+    width:120px;
+    height:100px;
     flex-shrink:0;
 }
 
