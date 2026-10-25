@@ -277,7 +277,7 @@ body.storm{
 
 .hours-track{
   display:flex;
-  gap:10px;
+  gap:14px;
   overflow-x:auto;
   scroll-behavior:smooth;
   scrollbar-width:none;
@@ -288,7 +288,7 @@ body.storm{
 }
 
 .hour{
-  flex:1 1 0;
+  flex:0 0 calc((100% - 42px) / 4);
   min-width:0;
   text-align:center;
   padding:2px 0;
@@ -423,11 +423,17 @@ function render(data){
 
 const hours = [];
 const now = new Date();
+const start = new Date(
+  now.getFullYear(),
+  now.getMonth(),
+  now.getDate(),
+  now.getHours()
+);
 
 for(let i=0;i<h.time.length && hours.length<24;i++){
   const d = new Date(h.time[i]);
 
-  if(d > now){
+  if(d >= start){
     hours.push({
       t:d.getHours().toString().padStart(2,"0")+":00",
       c:h.weather_code[i],
