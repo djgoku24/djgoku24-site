@@ -2545,32 +2545,34 @@ max-height: 32px;
     </div>
 
     <!-- PALERMO -->
-    <section class="weather-panel">
-      <h2 class="weather-panel-title">PALERMO</h2>
+<section class="weather-panel">
+  <h2 class="weather-panel-title">PALERMO</h2>
+  <iframe
+    src="weather-palermo.html"
+    title="Meteo Palermo"
+    style="display:block; width:100%; height:260px; border:0; background:transparent;">
+  </iframe>
+</section>
 
-      <div id="ww_72c5f6e0cf831" v='1.3' loc='id' a='{"t":"horizontal","lang":"it","sl_lpl":1,"ids":["wl7981"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
- </div>
-    </section>
+<!-- ROMA -->
+<section class="weather-panel">
+  <h2 class="weather-panel-title">ROMA</h2>
+  <iframe
+    src="weather-roma.html"
+    title="Meteo Roma"
+    style="display:block; width:100%; height:260px; border:0; background:transparent;">
+  </iframe>
+</section>
 
-    <!-- ROMA -->
-    <section class="weather-panel">
-      <h2 class="weather-panel-title">ROMA</h2>
-
-      <div id="ww_555ca156799b2" v='1.3' loc='id' a='{"t":"horizontal","lang":"it","sl_lpl":1,"ids":["wl2405"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
-        
-      </div>
-    </section>
-
-    <!-- MILANO -->
-    <section class="weather-panel">
-      <h2 class="weather-panel-title">MILANO</h2>
-
-     <div id="ww_b435bd6796968" v='1.3' loc='id' a='{"t":"horizontal","lang":"it","sl_lpl":1,"ids":["wl3467"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'></div>
-    </section>
-
-  </section>
-</div>
-
+<!-- MILANO -->
+<section class="weather-panel">
+  <h2 class="weather-panel-title">MILANO</h2>
+  <iframe
+    src="weather-milano.html"
+    title="Meteo Milano"
+    style="display:block; width:100%; height:260px; border:0; background:transparent;">
+  </iframe>
+</section>
     
       
 
@@ -2748,29 +2750,7 @@ max-height: 32px;
 </script>
 
 
-<script>
-  let weatherWidgetsLoaded = false;
 
-  document.addEventListener('click', function (event) {
-    const button = event.target.closest('[data-page="weather"]');
-    if (!button || weatherWidgetsLoaded) return;
-
-    weatherWidgetsLoaded = true;
-
-    const widgetIds = [
-      'ww_72c5f6e0cf831', // Palermo
-      'ww_555ca156799b2', // Roma
-      'ww_b435bd6796968'  // Milano
-    ];
-
-    widgetIds.forEach(function (id) {
-      const script = document.createElement('script');
-      script.async = true;
-      script.src = 'https://app3.weatherwidget.org/js/?id=' + id;
-      document.body.appendChild(script);
-    });
-  });
-</script>
 
 </body>
 </html>
