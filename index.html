@@ -2157,6 +2157,27 @@ max-height: 32px;
   }
 }
 
+.player-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.side-brand {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -30px; /* la alza; prova -20, -30, -40 */
+}
+
+.side-slogan {
+  text-align: center;
+}
+
+
 </style>
 </head>
 
@@ -2260,12 +2281,7 @@ max-height: 32px;
 
       </nav>
 
-    <div class="side-brand">
-  <div class="side-slogan">
-    Music<br>
-    is my life
-  </div>
-</div>
+    
     </aside>
 
     <main class="main">
@@ -2673,6 +2689,12 @@ max-height: 32px;
   </button>
 </div>
 
+<div class="side-brand">
+  <div class="side-slogan">
+    Music<br>
+    is my life
+  </div>
+</div>
 
       <div class="right-footer">
         MUSIC • ENERGY • LIVE
