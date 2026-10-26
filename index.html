@@ -2193,8 +2193,16 @@ max-height: 32px;
   background:transparent;
 }
 
+.nav-animated-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
 </style>
-</head>
+
+
 
 <body>
   <div class="app-shell">
@@ -2227,7 +2235,12 @@ max-height: 32px;
   class="nav-btn active"
   data-page="radio"
 >
-  <span aria-hidden="true">📻</span>
+  <img
+    class="nav-animated-icon"
+    src="https://i.pinimg.com/originals/e4/80/61/e480614d146e6c60f2f17402dde13165.gif"
+    alt=""
+    aria-hidden="true"
+  >
   Radio
 </button>
 
