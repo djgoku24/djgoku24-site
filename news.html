@@ -57,7 +57,7 @@ let titles;
 let index = 0;
 
 function fetchRSS() {
-    fetch('/api/news')
+    fetch('https://djgoku24-site.goku2424.workers.dev/api/news')
     .then(response => response.json())
     .then(data => {
         if (!data.items || data.items.length === 0) {
